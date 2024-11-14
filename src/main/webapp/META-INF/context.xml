@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context crossContext="true">
+    <Resource name="jdbc/EQUIPE" auth="Container"
+              type="javax.sql.DataSource"
+              maxTotal = "100" minIdle="10" maxIdle="30" maxWaitMillis="10000"
+              username="equipe" password="equipe2024"
+              driverClassName="oracle.jdbc.driver.OracleDriver"
+              url="jdbc:oracle:thin:@10.242.194.182:1521:XE" />
+</Context>
