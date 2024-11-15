@@ -1,14 +1,15 @@
 package model.entity;
 
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 public class Post {
     private int id;
     private String content;
     private int likesQuantity;
     private User user;
-    private LocalDateTime postDate;
-    private Post thread;
+    private Date postDate;
+    private List<Post> thread;
 
     public Post() {}
 
@@ -44,19 +45,19 @@ public class Post {
         this.user = user;
     }
 
-    public LocalDateTime getPostDate() {
+    public Date getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(LocalDateTime postDate) {
+    public void setPostDate(Date postDate) {
         this.postDate = postDate;
     }
 
-    public Post getThread() {
+    public List<Post> getThread() {
         return thread;
     }
 
-    public void setThread(Post thread) {
+    public void setThread(List<Post> thread) {
         this.thread = thread;
     }
 }

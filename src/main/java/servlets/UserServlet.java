@@ -16,9 +16,11 @@ import java.util.Optional;
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    UserDao userDao;
 
     public UserServlet() {
         super();
+        this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
     }
 
 
@@ -49,7 +51,6 @@ public class UserServlet extends HttpServlet {
         String username = request.getParameter("username");
         String idParam = request.getParameter("id");
         Optional<User> user = Optional.empty();
-        UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
 
 
         try {
