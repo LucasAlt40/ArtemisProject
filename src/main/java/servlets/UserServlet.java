@@ -6,21 +6,27 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.dao.PostDao;
 import model.dao.UserDao;
+import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 @WebServlet("/user")
 public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     UserDao userDao;
+    PostDao postDao;
 
     public UserServlet() {
         super();
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
+        this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
     }
 
 
@@ -41,6 +47,9 @@ public class UserServlet extends HttpServlet {
         switch (action) {
             case "view":
                 viewUser(request, response);
+                break;
+            case "viewPosts":
+                viewPostsByUserId(request, response);
                 break;
             case null, default:
                 break;
@@ -71,6 +80,16 @@ public class UserServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             request.setAttribute("error", "ID de usuário inválido.");
             request.getRequestDispatcher("/pages/error.jsp").forward(request, response);
+        }
+    }
+
+    public void viewPostsByUserId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String username = request.getParameter("username");
+        List<Post> posts;
+        if(username != null && !username.isEmpty()) {
+            posts = postDao.getPostsByUsername(username);
+            request.setAttribute("posts", posts);
+            request.getRequestDispatcher("/pages/profile/postView.jsp").forward(request, response);
         }
     }
 

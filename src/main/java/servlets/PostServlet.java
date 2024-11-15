@@ -47,22 +47,19 @@ public class PostServlet extends HttpServlet {
 
     private void viewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String idParam = request.getParameter("id");
-        String user_idParam = request.getParameter("user_id");
         Optional<Post> post = Optional.empty();
-        List<Post> posts = new ArrayList<>();
 
         try{
             if(idParam != null && !idParam.isEmpty()){
                 Integer id = Integer.parseInt(idParam);
                 post = postDao.getPostById(id);
-            }else if(user_idParam != null && !user_idParam.isEmpty()){
-                Integer user_id = Integer.parseInt(user_idParam);
-                posts = postDao.getPostsByUserId(user_id);
             }
 
             if(post.isPresent()){
                 request.setAttribute("post", post.get());
                 request.getRequestDispatcher("/pages/profile/postView.jsp").forward(request, response);
+            } else {
+                //TODO
             }
         }catch (NumberFormatException e){
             request.setAttribute("error", "ID do post inválido.");

@@ -9,7 +9,7 @@ public class Post {
     private int likesQuantity;
     private User user;
     private Date postDate;
-    private List<Post> thread;
+    private List<Post> threads;
 
     public Post() {}
 
@@ -53,11 +53,11 @@ public class Post {
         this.postDate = postDate;
     }
 
-    public List<Post> getThread() {
-        return thread;
+    public List<Post> getThreads() {
+        return threads;
     }
 
-    public void setThread(List<Post> thread) {
-        this.thread = thread;
+    public void setThreads(List<Post> threads) {
+        this.threads = threads;
     }
 }
