@@ -1,13 +1,13 @@
 package model.entity;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Post {
     private int id;
     private String content;
     private int likesQuantity;
     private User user;
-    private Date postDate;
+    private LocalDateTime postDate;
     private Post thread;
 
     public Post() {}
@@ -44,11 +44,11 @@ public class Post {
         this.user = user;
     }
 
-    public Date getPostDate() {
+    public LocalDateTime getPostDate() {
         return postDate;
     }
 
-    public void setPostDate(Date postDate) {
+    public void setPostDate(LocalDateTime postDate) {
         this.postDate = postDate;
     }
 

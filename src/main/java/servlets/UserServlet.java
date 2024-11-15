@@ -51,7 +51,7 @@ public class UserServlet extends HttpServlet {
         Optional<User> user = Optional.empty();
         UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
 
-        userDao.teste();
+
         try {
             if (idParam != null && !idParam.isEmpty()) {
                 int id = Integer.parseInt(idParam);
