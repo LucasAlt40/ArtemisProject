@@ -1,6 +1,7 @@
 package model.dao;
 
 import model.entity.Post;
+import oracle.sql.DATE;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -8,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +51,25 @@ public class PostDao {
             e.printStackTrace();
         }
         return posts;
+    }
+
+    public Boolean sendPost(Post post, Integer theadId) {
+        String sql = "INSERT INTO POST (CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, ?, ?)";
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, post.getContent());
+            stmt.setDate(2, new DATE().dateValue());
+            stmt.setInt(3, post.getUser().getId());
+            if(theadId != null){
+                stmt.setInt(4, theadId);
+            }
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     private List<Post> getThreadsByPostId(Integer id) {

@@ -69,5 +69,20 @@ public class PostServlet extends HttpServlet {
 
     }
 
+    private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        //String sql = "INSERT INTO POST (CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, ?, ?)";
+        String content = request.getParameter("content");
+        Integer threadId = Integer.parseInt(request.getParameter("threadId"));
+        Post post = new Post();
+        post.setContent(content);
+
+        if(postDao.sendPost(post, threadId)){
+            request.setAttribute("success", "Post created");
+            request.getRequestDispatcher("/pages/success.jsp").forward(request, response);
+        }
+
+
+    }
+
 
 }
