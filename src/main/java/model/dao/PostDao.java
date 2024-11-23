@@ -90,6 +90,21 @@ public class PostDao {
         return posts;
     }
 
+    public Integer getLastPostId() {
+        String sql = "SELECT MAX(ID) FROM POST";
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("MAX(ID)");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
     private Post mapResultSetToPost (ResultSet rs) throws SQLException {
         var userDao = new UserDao(this.dataSource);
         Post post = new Post();
