@@ -38,7 +38,7 @@ public class PostDao {
     public List<Post> getPostsByUsername(String username) {
         String sql = "SELECT P.ID as ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID " +
                 "FROM POST P JOIN USER_ARTEMIS U ON P.USER_ID = U.ID " +
-                "WHERE USERNAME = ? AND P.THREAD_ID IS NULL";
+                "WHERE USERNAME = ? AND P.THREAD_ID IS NULL ORDER BY P.POST_DATE DESC";
         List<Post> posts = new ArrayList();
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -54,14 +54,18 @@ public class PostDao {
     }
 
     public Boolean sendPost(Post post, Integer theadId) {
-        String sql = "INSERT INTO POST (CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO POST (ID, CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, SYSDATE, ?, ?)";
 
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, post.getContent());
-            stmt.setDate(2, new DATE().dateValue());
+
+            stmt.setInt(1, getLastPostId() + 1);
+            stmt.setString(2, post.getContent());
             stmt.setInt(3, post.getUser().getId());
-            if(theadId != null){
+
+            if(theadId != null && theadId > 0){
                 stmt.setInt(4, theadId);
+            } else {
+                stmt.setNull(4, 0);
             }
             stmt.executeUpdate();
             return true;

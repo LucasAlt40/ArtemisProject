@@ -9,7 +9,9 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.ServletException;
 import model.dao.PostDao;
+import model.dao.UserDao;
 import model.entity.Post;
+import model.entity.User;
 import utils.DataSourceSearcher;
 
 @WebServlet("/PostServlet")
@@ -17,10 +19,12 @@ public class PostServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     PostDao postDao;
+    UserDao userDao;
 
     public PostServlet() {
         super();
         this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
+        this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
     }
 
     @Override
@@ -39,6 +43,9 @@ public class PostServlet extends HttpServlet {
         switch (action) {
             case "view":
                 viewPost(request, response);
+                break;
+            case "add":
+                createPost(request, response);
                 break;
             case null, default:
                 break;
@@ -70,15 +77,30 @@ public class PostServlet extends HttpServlet {
     }
 
     private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        //String sql = "INSERT INTO POST (CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, ?, ?)";
+        //TODO
+        // GET USER FROM SESSION
+
+        int threadId = 0;
+
         String content = request.getParameter("content");
-        Integer threadId = Integer.parseInt(request.getParameter("threadId"));
+        if(request.getParameter("threadId") != null && !request.getParameter("threadId").trim().isEmpty()){
+            threadId = Integer.parseInt(request.getParameter("threadId"));
+        }
+        String username = request.getParameter("username");
+
+        Optional<User> user = userDao.getUserByUsername(username);
+
+
         Post post = new Post();
         post.setContent(content);
+        post.setUser(user.get());
 
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
             request.getRequestDispatcher("/pages/success.jsp").forward(request, response);
+            System.out.println("Executou");
+        } else {
+            System.out.println("ERRO");
         }
 
 
