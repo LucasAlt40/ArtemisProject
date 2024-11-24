@@ -1,8 +1,6 @@
 package servlets;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import jakarta.servlet.http.*;
@@ -13,8 +11,9 @@ import model.dao.UserDao;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
+import utils.Utils;
 
-@WebServlet("/PostServlet")
+@WebServlet("/post")
 public class PostServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -41,26 +40,22 @@ public class PostServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action) {
-            case "view":
-                viewPost(request, response);
+            case "viewById":
+                viewPostById(request, response);
                 break;
             case "add":
                 createPost(request, response);
                 break;
             case "feed":
-                viewFeed(request, response);
+                Utils.viewFeed(request, response, postDao);
+                break;
             case null, default:
+                Utils.viewFeed(request, response, postDao);
                 break;
         }
     }
 
-    private void viewFeed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.setAttribute("posts", postDao.getFeed());
-        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
-        System.out.println(postDao.getFeed());
-    }
-
-    private void viewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void viewPostById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String idParam = request.getParameter("id");
         Optional<Post> post = Optional.empty();
 

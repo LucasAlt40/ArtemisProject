@@ -1,6 +1,5 @@
 package servlets;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,9 +10,9 @@ import model.dao.UserDao;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
+import utils.Utils;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,12 +47,16 @@ public class UserServlet extends HttpServlet {
             case "view":
                 viewUser(request, response);
                 break;
-            case "viewPosts":
-                viewPostsByUserId(request, response);
+            case "viewPostsByUser":
+                viewPostsByUsername(request, response);
                 break;
             case null, default:
+                Utils.viewFeed(request, response, postDao);
                 break;
         }
+    }
+    private void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     }
 
     private void viewUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -83,7 +86,7 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    public void viewPostsByUserId(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void viewPostsByUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         List<Post> posts;
         if(username != null && !username.isEmpty()) {
