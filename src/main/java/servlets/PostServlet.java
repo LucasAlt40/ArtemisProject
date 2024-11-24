@@ -47,9 +47,17 @@ public class PostServlet extends HttpServlet {
             case "add":
                 createPost(request, response);
                 break;
+            case "feed":
+                viewFeed(request, response);
             case null, default:
                 break;
         }
+    }
+
+    private void viewFeed(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("posts", postDao.getFeed());
+        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+        System.out.println(postDao.getFeed());
     }
 
     private void viewPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
@@ -64,14 +72,14 @@ public class PostServlet extends HttpServlet {
 
             if(post.isPresent()){
                 request.setAttribute("post", post.get());
-                request.getRequestDispatcher("/pages/profile/postView.jsp").forward(request, response);
+                request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
             } else {
                 //TODO
             }
         }catch (NumberFormatException e){
             request.setAttribute("error", "ID do post inválido.");
             //TODO
-            request.getRequestDispatcher("/pages/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
         }
 
     }
@@ -97,7 +105,7 @@ public class PostServlet extends HttpServlet {
 
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
-            request.getRequestDispatcher("/pages/success.jsp").forward(request, response);
+            request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
             System.out.println("Executou");
         } else {
             System.out.println("ERRO");

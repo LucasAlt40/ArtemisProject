@@ -94,6 +94,22 @@ public class PostDao {
         return posts;
     }
 
+    public List<Post> getFeed() {
+        String sql = "SELECT ID,CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE THREAD_ID IS NULL ORDER BY POST_DATE DESC";
+        List<Post> posts = new ArrayList();
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(mapResultSetToPost(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
     public Integer getLastPostId() {
         String sql = "SELECT MAX(ID) FROM POST";
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {

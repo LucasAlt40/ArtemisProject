@@ -72,14 +72,14 @@ public class UserServlet extends HttpServlet {
 
             if (user.isPresent()) {
                 request.setAttribute("user", user.get());
-                request.getRequestDispatcher("/pages/profile/profileView.jsp").forward(request, response);
+                request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Usuário não encontrado.");
-                request.getRequestDispatcher("/pages/error.jsp").forward(request, response);
+                request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
             }
         } catch (NumberFormatException e) {
             request.setAttribute("error", "ID de usuário inválido.");
-            request.getRequestDispatcher("/pages/error.jsp").forward(request, response);
+            request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
         }
     }
 
@@ -89,7 +89,7 @@ public class UserServlet extends HttpServlet {
         if(username != null && !username.isEmpty()) {
             posts = postDao.getPostsByUsername(username);
             request.setAttribute("posts", posts);
-            request.getRequestDispatcher("/pages/profile/postView.jsp").forward(request, response);
+            request.getRequestDispatcher("/src/views/postsUser.jsp").forward(request, response);
         }
     }
 
