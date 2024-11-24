@@ -49,6 +49,10 @@ public class PostServlet extends HttpServlet {
             case "feed":
                 Utils.viewFeed(request, response, postDao);
                 break;
+            case "like":
+                likePost(request, response);
+            case "deslike":
+                deslikePost(request, response);
             case null, default:
                 Utils.viewFeed(request, response, postDao);
                 break;
@@ -106,7 +110,19 @@ public class PostServlet extends HttpServlet {
             System.out.println("ERRO");
         }
 
+    }
 
+    public Boolean likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Integer idPost = Integer.parseInt(request.getParameter("idPost"));
+        Integer idUser = Integer.parseInt(request.getParameter("idUser"));
+
+        return postDao.likePost(idPost, idUser);
+    }
+    public Boolean deslikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+        Integer idPost = Integer.parseInt(request.getParameter("idPost"));
+        Integer idUser = Integer.parseInt(request.getParameter("idUser"));
+
+        return postDao.deslikePost(idPost, idUser);
     }
 
 

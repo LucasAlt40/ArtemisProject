@@ -75,6 +75,37 @@ public class PostDao {
         }
 
     }
+    public Boolean likePost(Integer postId, Integer userId) {
+        String sql = "INSERT INTO POST_LIKES VALUES (?,?)";
+        String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY + 1) WHERE ID = ?";
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+            stmt2.setInt(1, postId);
+            stmt.setInt(1, postId);
+            stmt.setInt(2, userId);
+            stmt.executeUpdate();
+            stmt2.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Boolean deslikePost(Integer postId, Integer userId) {
+        String sql = "DELETE POST_LIKES WHERE ID_POST = ? AND ID_USER =?; COMMIT";
+        String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY - 1) WHERE ID = ?; COMMIT";
+
+        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)){
+            stmt.setInt(1, postId);
+            stmt.setInt(2, userId);
+            stmt2.setInt(1, postId);
+            stmt.executeUpdate();
+            stmt2.executeUpdate();
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     private List<Post> getThreadsByPostId(Integer id) {
         String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE THREAD_ID= ?";
@@ -94,11 +125,18 @@ public class PostDao {
         return posts;
     }
 
-    public List<Post> getFeed() {
-        String sql = "SELECT ID,CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE THREAD_ID IS NULL ORDER BY POST_DATE DESC";
+    public List<Post> getFeed(Integer id) {
+        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID,\n" +
+                "    CASE\n" +
+                "        WHEN POST_LIKES.ID_USER IS NOT NULL THEN 1\n" +
+                "        ELSE 0\n" +
+                "    END AS user_liked\n" +
+                "FROM POST\n" +
+                "LEFT JOIN POST_LIKES ON POST.ID = POST_LIKES.ID_POST AND POST_LIKES.ID_USER = ?;\n";
         List<Post> posts = new ArrayList();
 
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1,id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     posts.add(mapResultSetToPost(rs));

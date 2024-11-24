@@ -10,9 +10,9 @@ import java.io.IOException;
 public class Utils {
 
     public static void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException {
-        request.setAttribute("posts", postDao.getFeed());
-        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
-        System.out.println(postDao.getFeed());
+//        request.setAttribute("posts", postDao.getFeed());
+//        //TODO
+//        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
     }
 
 }
