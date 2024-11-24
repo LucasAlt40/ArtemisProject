@@ -75,6 +75,7 @@ public class PostDao {
         }
 
     }
+
     public Boolean likePost(Integer postId, Integer userId) {
         String sql = "INSERT INTO POST_LIKES VALUES (?,?)";
         String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY + 1) WHERE ID = ?";
@@ -90,9 +91,10 @@ public class PostDao {
         }
         return false;
     }
+
     public Boolean deslikePost(Integer postId, Integer userId) {
-        String sql = "DELETE POST_LIKES WHERE ID_POST = ? AND ID_USER =?; COMMIT";
-        String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY - 1) WHERE ID = ?; COMMIT";
+        String sql = "DELETE POST_LIKES WHERE ID_POST = ? AND ID_USER =?";
+        String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY - 1) WHERE ID = ?";
 
         try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)){
             stmt.setInt(1, postId);

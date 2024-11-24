@@ -51,8 +51,10 @@ public class PostServlet extends HttpServlet {
                 break;
             case "like":
                 likePost(request, response);
+                break;
             case "deslike":
                 deslikePost(request, response);
+                break;
             case null, default:
                 Utils.viewFeed(request, response, postDao);
                 break;
