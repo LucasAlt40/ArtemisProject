@@ -7,6 +7,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.ServletException;
 import model.dao.PostDao;
+import model.dao.RequestDao;
 import model.dao.UserDao;
 import model.entity.Post;
 import model.entity.User;
@@ -19,11 +20,13 @@ public class PostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     PostDao postDao;
     UserDao userDao;
+    RequestDao requestDao;
 
     public PostServlet() {
         super();
         this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
+        this.requestDao = new RequestDao(DataSourceSearcher.getInstance().getDataSource());
     }
 
     @Override
@@ -126,6 +129,7 @@ public class PostServlet extends HttpServlet {
 
         return postDao.deslikePost(idPost, idUser);
     }
+
 
 
 }

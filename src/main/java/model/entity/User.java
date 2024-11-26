@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String biografy;
     private String pathProfilePicture;
+    private Integer friendsQuantity;
 
     public User() {}
 
@@ -56,5 +57,13 @@ public class User {
 
     public void setPathProfilePicture(String pathProfilePicture) {
         this.pathProfilePicture = pathProfilePicture;
+    }
+
+    public Integer getFriendsQuantity() {
+        return friendsQuantity;
+    }
+
+    public void setFriendsQuantity(Integer friendsQuantity) {
+        this.friendsQuantity = friendsQuantity;
     }
 }

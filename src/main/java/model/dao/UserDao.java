@@ -87,6 +87,7 @@ public class UserDao {
         user.setEmail(rs.getString("EMAIL"));
         user.setBiografy(rs.getString("BIOGRAFY"));
         user.setPathProfilePicture(rs.getString("PATH_PROFILE_PICTURE"));
+        user.setFriendsQuantity(rs.getInt("FRIENDS_QUANTITY"));
         return user;
     }
 
