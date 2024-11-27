@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
-<div id="post" class="card">
+<div id="post" class="card mb-3">
     <div class="card-header">
         <div class="d-flex justify-content-between">
             <div>

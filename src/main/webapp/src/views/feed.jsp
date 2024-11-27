@@ -11,10 +11,10 @@
 
 <t:app username="${user.username}">
     <jsp:body>
-        <div class="vh-100">
+        <div>
             <h4 class="text-start">Feeds</h4>
             <div class="mb-3">
-                <span>No que está pensando?!</span>
+                <h5>No que está pensando?!</h5>
                 <form action="${pageContext.request.contextPath}/post?action=add" method="POST">
                     <div class="mb-2">
                         <textarea class="form-control" id="content" name="content" rows="3"></textarea>

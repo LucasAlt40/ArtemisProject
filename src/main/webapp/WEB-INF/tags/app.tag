@@ -9,7 +9,7 @@
 <t:root>
     <jsp:body>
         <div class="container py-5">
-            <div class="row justify-content-between">
+            <div class="row justify-content-between position-sticky top-0">
                 <div class="col-3">
                     <div class="d-flex flex-column justify-content-center align-items-center mb-3">
                         <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">${username.charAt(0)}</span>
@@ -39,7 +39,7 @@
                 <div class="col-5">
                     <jsp:doBody/>
                 </div>
-                <div class="col-3">
+                <div class="col-3 position-sticky top-0">
                     <div>
                         <h4>Amigos</h4>
                         <c:choose>
