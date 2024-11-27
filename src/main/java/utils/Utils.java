@@ -3,16 +3,23 @@ package utils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.dao.PostDao;
+import model.entity.Request;
+import model.entity.User;
 
 import java.io.IOException;
 
 public class Utils {
 
     public static void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException {
-//        request.setAttribute("posts", postDao.getFeed());
-//        //TODO
-//        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        if (session.getAttribute("user") != null ) {
+            request.setAttribute("posts", postDao.getFeed(user.getId()));
+        }
+
+        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
     }
 
 }
