@@ -53,15 +53,11 @@ public class AuthServlet extends HttpServlet {
 
         String username = req.getParameter("username");
         String email = req.getParameter("email");
-//        String pathProfilePicture = req.getParameter("pathProfilePicture");
-//        String biografy = req.getParameter("biografy");
         String password = req.getParameter("password");
 
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
-//        user.setPathProfilePicture(pathProfilePicture);
-//        user.setBiografy(biografy);
         user.setPassword(PasswordEncoder.encode(password));
 
         UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
