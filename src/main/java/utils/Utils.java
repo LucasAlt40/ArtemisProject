@@ -12,14 +12,18 @@ import java.io.IOException;
 
 public class Utils {
 
-    public static void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        User user = (User) session.getAttribute("user");
-        if (session.getAttribute("user") != null ) {
+    public  void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException {
+       User user = this.getUserFromSession(request);
+        if (user != null) {
             request.setAttribute("posts", postDao.getFeed(user.getId()));
         }
 
         request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+    }
+
+    public User getUserFromSession(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        return (User) session.getAttribute("user");
     }
 
 }

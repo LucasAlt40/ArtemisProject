@@ -23,11 +23,13 @@ public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     UserDao userDao;
     PostDao postDao;
+    Utils utils;
 
     public UserServlet() {
         super();
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
         this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
+        this.utils = new Utils();
     }
 
 
@@ -59,12 +61,9 @@ public class UserServlet extends HttpServlet {
                 login(request, response);
                 break;
             case null, default:
-                Utils.viewFeed(request, response, postDao);
+                utils.viewFeed(request, response, postDao);
                 break;
         }
-    }
-    private void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     }
 
     private void viewUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -96,6 +95,7 @@ public class UserServlet extends HttpServlet {
 
     private void viewPostsByUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
+
         List<Post> posts;
         if(username != null && !username.isEmpty()) {
             posts = postDao.getPostsByUsername(username);
