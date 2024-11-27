@@ -79,17 +79,7 @@ public class UserDao {
     }
 
 
-    private User mapResultSetToUser(ResultSet rs) throws SQLException {
-        User user = new User();
-        user.setId(rs.getInt("ID"));
-        user.setUsername(rs.getString("USERNAME"));
-        user.setPassword(rs.getString("PASSWORD"));
-        user.setEmail(rs.getString("EMAIL"));
-        user.setBiografy(rs.getString("BIOGRAFY"));
-        user.setPathProfilePicture(rs.getString("PATH_PROFILE_PICTURE"));
-        user.setFriendsQuantity(rs.getInt("FRIENDS_QUANTITY"));
-        return user;
-    }
+
 
     public Boolean save(User user){
         Optional<User> optional = getUserByEmail(user.getEmail());
@@ -138,5 +128,17 @@ public class UserDao {
         } catch (SQLException sqlException) {
             throw new RuntimeException("Erro durante a consulta no BD", sqlException);
         }
+    }
+
+    private User mapResultSetToUser(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("ID"));
+        user.setUsername(rs.getString("USERNAME"));
+        user.setPassword(rs.getString("PASSWORD"));
+        user.setEmail(rs.getString("EMAIL"));
+        user.setBiografy(rs.getString("BIOGRAFY"));
+        user.setPathProfilePicture(rs.getString("PATH_PROFILE_PICTURE"));
+        //user.setFriendsQuantity(rs.getInt("FRIENDS_QUANTITY"));
+        return user;
     }
 }
