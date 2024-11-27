@@ -5,11 +5,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.dao.PostDao;
 import model.dao.UserDao;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
+import utils.PasswordEncoder;
 import utils.Utils;
 
 import java.io.IOException;
@@ -21,11 +23,13 @@ public class UserServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     UserDao userDao;
     PostDao postDao;
+    Utils utils;
 
     public UserServlet() {
         super();
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
         this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
+        this.utils = new Utils();
     }
 
 
@@ -50,19 +54,16 @@ public class UserServlet extends HttpServlet {
                 viewPostsByUsername(request, response);
                 break;
             case null, default:
-                Utils.viewFeed(request, response, postDao);
+                utils.viewFeed(request, response, postDao);
                 break;
         }
-    }
-
-    private void error(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     }
 
     private void viewUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
         String idParam = request.getParameter("id");
         Optional<User> user = Optional.empty();
+
 
         try {
             if (idParam != null && !idParam.isEmpty()) {
@@ -87,6 +88,7 @@ public class UserServlet extends HttpServlet {
 
     private void viewPostsByUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
+
         List<Post> posts;
         if(username != null && !username.isEmpty()) {
             posts = postDao.getPostsByUsername(username);

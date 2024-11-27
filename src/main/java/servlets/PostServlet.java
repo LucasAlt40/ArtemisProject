@@ -7,6 +7,7 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import jakarta.servlet.ServletException;
 import model.dao.PostDao;
+import model.dao.RequestDao;
 import model.dao.UserDao;
 import model.entity.Post;
 import model.entity.User;
@@ -19,11 +20,15 @@ public class PostServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     PostDao postDao;
     UserDao userDao;
+    RequestDao requestDao;
+    Utils utils;
 
     public PostServlet() {
         super();
         this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
+        this.requestDao = new RequestDao(DataSourceSearcher.getInstance().getDataSource());
+        this.utils = new Utils();
     }
 
     @Override
@@ -47,8 +52,7 @@ public class PostServlet extends HttpServlet {
                 createPost(request, response);
                 break;
             case "feed":
-//                Utils.viewFeed(request, response, postDao);
-                request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+                utils.viewFeed(request, response, postDao);
                 break;
             case "like":
                 likePost(request, response);
@@ -57,7 +61,7 @@ public class PostServlet extends HttpServlet {
                 deslikePost(request, response);
                 break;
             case null, default:
-                Utils.viewFeed(request, response, postDao);
+                utils.viewFeed(request, response, postDao);
                 break;
         }
     }
@@ -87,23 +91,18 @@ public class PostServlet extends HttpServlet {
     }
 
     private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        //TODO
-        // GET USER FROM SESSION
-
         int threadId = 0;
 
         String content = request.getParameter("content");
         if(request.getParameter("threadId") != null && !request.getParameter("threadId").trim().isEmpty()){
             threadId = Integer.parseInt(request.getParameter("threadId"));
         }
-        String username = request.getParameter("username");
 
-        Optional<User> user = userDao.getUserByUsername(username);
-
+        User user = utils.getUserFromSession(request);
 
         Post post = new Post();
         post.setContent(content);
-        post.setUser(user.get());
+        post.setUser(user);
 
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
@@ -117,16 +116,17 @@ public class PostServlet extends HttpServlet {
 
     public Boolean likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
-        Integer idUser = Integer.parseInt(request.getParameter("idUser"));
+        User user = utils.getUserFromSession(request);
 
-        return postDao.likePost(idPost, idUser);
+        return postDao.likePost(idPost, user.getId());
     }
     public Boolean deslikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
-        Integer idUser = Integer.parseInt(request.getParameter("idUser"));
+        User user = utils.getUserFromSession(request);
 
-        return postDao.deslikePost(idPost, idUser);
+        return postDao.deslikePost(idPost, user.getId());
     }
+
 
 
 }
