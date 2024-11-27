@@ -134,7 +134,7 @@ public class PostDao {
                 "        ELSE 0\n" +
                 "    END AS user_liked\n" +
                 "FROM POST\n" +
-                "LEFT JOIN POST_LIKES ON POST.ID = POST_LIKES.ID_POST AND POST_LIKES.ID_USER = ?;\n";
+                "LEFT JOIN POST_LIKES ON POST.ID = POST_LIKES.ID_POST AND POST_LIKES.ID_USER = ? WHERE THREAD_ID IS NULL";
         List<Post> posts = new ArrayList();
 
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
