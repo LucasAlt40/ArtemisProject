@@ -28,7 +28,7 @@
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary">Acessar</button>
-                        <a href="signup.jsp" class="link-underline text-center">Cadastre-se aqui</a>
+                        <a href="${pageContext.request.contextPath}/src/views/signup.jsp" class="link-underline text-center">Cadastre-se aqui</a>
                     </div>
                 </form>
             </div>

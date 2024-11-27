@@ -1,5 +1,10 @@
 <%@tag description="App page layout" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@attribute name="username" required="true"%>
+
+<%--<c:set var="names" value="${fn:split(username,' ')}"/>--%>
 
 <t:root>
     <jsp:body>
@@ -7,9 +12,10 @@
             <div class="row justify-content-between">
                 <div class="col-3">
                     <div class="d-flex flex-column justify-content-center align-items-center mb-3">
-                        <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">UL</span>
-                        <span>Usuário logado</span>
-                        <span>@usuário_logado</span>
+                        <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">${username.charAt(0)}</span>
+                        <span>
+                            <c:out value="${username}"/>
+                        </span>
                         <button id="switchTheme" class="btn">
                             <span class="text-light">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
@@ -28,10 +34,6 @@
                             <jsp:param name="icon" value="feed"/>
                             <jsp:param name="text" value="Feeds"/>
                         </jsp:include>
-                        <jsp:include page="/src/components/nav-button.jsp">
-                            <jsp:param name="icon" value="friends"/>
-                            <jsp:param name="text" value="Amigos"/>
-                        </jsp:include>
                     </div>
                 </div>
                 <div class="col-5">
@@ -40,27 +42,19 @@
                 <div class="col-3">
                     <div>
                         <h4>Amigos</h4>
-                        <div class="row justify-content-between gy-3 mb-3">
-                            <div class="col">
-                                <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">AF</span>
-                            </div>
-                            <div class="col">
-                                <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">BC</span>
-                            </div>
-                            <div class="col">
-                                <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">NA</span>
-                            </div>
-                            <div class="col">
-                                <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">ER</span>
-                            </div>
-                            <div class="col">
-                                <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">EC</span>
-                            </div>
-                            <div class="col">
-                                <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">EF</span>
-                            </div>
-                        </div>
-                        <span>Ver todos</span>
+                        <c:choose>
+                            <c:when test="${not empty friends}">
+                                <div class="row justify-content-between gy-3 mb-3">
+                                    <div class="col">
+                                        <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">AF</span>
+                                    </div>
+                                    <span>Ver todos</span>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <span>Adicione seus amigos agora mesmo!</span>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
             </div>

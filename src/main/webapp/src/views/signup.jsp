@@ -34,7 +34,7 @@
                     </div>
                     <div class="d-grid gap-2">
                         <button type="submit" class="btn btn-primary">Cadastrar-se</button>
-                        <a href="signin.jsp" class="link-underline text-center">Já possuo uma conta, acessar.</a>
+                        <a href="${pageContext.request.contextPath}/src/views/signin.jsp" class="link-underline text-center">Já possuo uma conta, acessar.</a>
                     </div>
                 </form>
             </div>

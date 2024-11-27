@@ -32,7 +32,6 @@ public class UserServlet extends HttpServlet {
         this.utils = new Utils();
     }
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         chooseOption(req, resp);

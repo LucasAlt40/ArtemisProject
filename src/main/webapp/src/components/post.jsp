@@ -6,16 +6,22 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+
 <div id="post" class="card">
     <div class="card-header">
         <div class="d-flex justify-content-between">
             <div>
-                <span>Usuário y</span>
+                <span>
+                    <c:out value="${param.username}"/>
+                </span>
             </div>
         </div>
     </div>
     <div class="card-body">
-        <span class="text-start">Hi everyone, today i was on the most beautiful mountain in the world, i also want to say hi to ...</span>
+        <span class="text-start">
+            <c:out value="${param.content}"/>
+        </span>
     </div>
     <div class="card-footer">
         <div class="d-flex gap-3">
