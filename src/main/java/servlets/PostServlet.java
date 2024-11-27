@@ -106,24 +106,28 @@ public class PostServlet extends HttpServlet {
 
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
-            request.getRequestDispatcher("/post?action=feed").forward(request, response);
+            utils.viewFeed(request, response, postDao);
         } else {
             System.out.println("ERRO");
         }
 
     }
 
-    public Boolean likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
-        return postDao.likePost(idPost, user.getId());
+        if(postDao.likePost(idPost, user.getId())) {
+            utils.viewFeed(request, response, postDao);
+        }
     }
-    public Boolean deslikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void deslikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
-        return postDao.deslikePost(idPost, user.getId());
+        if(postDao.deslikePost(idPost, user.getId())) {
+            utils.viewFeed(request, response, postDao);
+        }
     }
 
 
