@@ -37,6 +37,7 @@
                                 <jsp:param name="username" value="${post.user.username}"/>
                                 <jsp:param name="content" value="${post.content}"/>
                             </jsp:include>
+                            <c:out value="${post.isLiked}"/>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
