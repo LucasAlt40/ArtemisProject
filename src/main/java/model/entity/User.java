@@ -3,6 +3,7 @@ package model.entity;
 public class User {
     private int id;
     private String username;
+    private String name;
     private String password;
     private String email;
     private String biografy;
@@ -65,5 +66,13 @@ public class User {
 
     public void setFriendsQuantity(Integer friendsQuantity) {
         this.friendsQuantity = friendsQuantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
