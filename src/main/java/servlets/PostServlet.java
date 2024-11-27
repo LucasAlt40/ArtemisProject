@@ -107,7 +107,6 @@ public class PostServlet extends HttpServlet {
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
             request.getRequestDispatcher("/post?action=feed").forward(request, response);
-            System.out.println("Executou");
         } else {
             System.out.println("ERRO");
         }
