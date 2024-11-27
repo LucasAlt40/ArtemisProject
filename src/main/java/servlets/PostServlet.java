@@ -47,7 +47,8 @@ public class PostServlet extends HttpServlet {
                 createPost(request, response);
                 break;
             case "feed":
-                Utils.viewFeed(request, response, postDao);
+//                Utils.viewFeed(request, response, postDao);
+                request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
                 break;
             case "like":
                 likePost(request, response);

@@ -7,11 +7,5 @@
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
-    <h1>teste</h1>
-</body>
-</html>
+
+<c:redirect url="/src/views/signin.jsp" />
