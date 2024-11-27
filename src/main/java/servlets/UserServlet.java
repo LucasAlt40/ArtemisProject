@@ -46,19 +46,12 @@ public class UserServlet extends HttpServlet {
     private void chooseOption(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
 
-
         switch (action) {
             case "view":
                 viewUser(request, response);
                 break;
             case "viewPostsByUser":
                 viewPostsByUsername(request, response);
-                break;
-            case "createUser":
-                createUser(request, response);
-                break;
-            case "login":
-                login(request, response);
                 break;
             case null, default:
                 utils.viewFeed(request, response, postDao);
@@ -101,52 +94,6 @@ public class UserServlet extends HttpServlet {
             posts = postDao.getPostsByUsername(username);
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/src/views/postsUser.jsp").forward(request, response);
-        }
-    }
-
-    private void createUser(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String username = req.getParameter("username");
-        String email = req.getParameter("email");
-        String pathProfilePicture = req.getParameter("pathProfilePicture");
-        String biografy = req.getParameter("biografy");
-        String password = req.getParameter("password");
-
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail(email);
-        user.setPathProfilePicture(pathProfilePicture);
-        user.setBiografy(biografy);
-        user.setPassword(PasswordEncoder.encode(password));
-
-        UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
-
-        if (userDao.save(user)) {
-            req.setAttribute("result", "registered");
-            req.getRequestDispatcher("/login-teste.jsp").forward(req, resp);
-        } else {
-            req.setAttribute("result", "notRegistered");
-            req.getRequestDispatcher("/user-teste.jsp").forward(req, resp);
-        }
-    }
-
-    private void login(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        String password = req.getParameter("password");
-
-        UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
-        Optional<User> optionalUser = userDao.getUserByEmailAndPassword(email, password);
-
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            HttpSession session = req.getSession();
-            session.setMaxInactiveInterval(600);
-            session.setAttribute("user", user);
-
-            req.getRequestDispatcher("/user.jsp").forward(req, resp); //mudar para perfil ou tl dps
-        } else {
-            req.setAttribute("result", "loginError");
-            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }
 
