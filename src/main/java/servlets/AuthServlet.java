@@ -44,6 +44,9 @@ public class AuthServlet extends HttpServlet {
             case "signin":
                 signin(request, response);
                 break;
+            case "signout":
+                signout(request, response);
+                break;
             case null, default:
                 break;
         }
@@ -90,5 +93,11 @@ public class AuthServlet extends HttpServlet {
             req.setAttribute("result", "loginError");
             req.getRequestDispatcher("/src/views/signin.jsp").forward(req, resp);
         }
+    }
+
+    private void signout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

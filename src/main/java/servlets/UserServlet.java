@@ -5,13 +5,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import model.dao.PostDao;
 import model.dao.UserDao;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
-import utils.PasswordEncoder;
 import utils.Utils;
 
 import java.io.IOException;
@@ -92,7 +90,7 @@ public class UserServlet extends HttpServlet {
         if(username != null && !username.isEmpty()) {
             posts = postDao.getPostsByUsername(username);
             request.setAttribute("posts", posts);
-            request.getRequestDispatcher("/src/views/postsUser.jsp").forward(request, response);
+            request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
         }
     }
 

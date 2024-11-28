@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@attribute name="name" required="true"%>
 <%@attribute name="username" required="true"%>
 
 <%--<c:set var="names" value="${fn:split(username,' ')}"/>--%>
@@ -13,6 +14,9 @@
                 <div class="col-3  position-sticky" style="height: fit-content; top: 50px">
                     <div class="d-flex flex-column justify-content-center align-items-center mb-3">
                         <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">${username.charAt(0)}</span>
+                        <span>
+                            <c:out value="${name}"/>
+                        </span>
                         <span>
                             <c:out value="${username}"/>
                         </span>
@@ -33,6 +37,19 @@
                         <jsp:include page="/src/components/nav-button.jsp">
                             <jsp:param name="icon" value="feed"/>
                             <jsp:param name="text" value="Feeds"/>
+                            <jsp:param name="href" value="/post?action=feed"/>
+                        </jsp:include>
+
+                        <jsp:include page="/src/components/nav-button.jsp">
+                            <jsp:param name="icon" value="profile"/>
+                            <jsp:param name="text" value="Profile"/>
+                            <jsp:param name="href" value="/user?action=viewPostsByUser"/>
+                        </jsp:include>
+
+                        <jsp:include page="/src/components/nav-button.jsp">
+                            <jsp:param name="icon" value="signout"/>
+                            <jsp:param name="text" value="Sign out"/>
+                            <jsp:param name="href" value="/auth?action=signout"/>
                         </jsp:include>
                     </div>
                 </div>
