@@ -36,6 +36,10 @@
                             <jsp:include page="../components/post.jsp">
                                 <jsp:param name="username" value="${post.user.username}"/>
                                 <jsp:param name="content" value="${post.content}"/>
+                                <jsp:param name="isLiked" value="${true}"/>
+                                <jsp:param name="likesQuantity" value="${post.likesQuantity}"/>
+                                <jsp:param name="postId" value="${post.id}"/>
+                                <jsp:param name="showFooter" value="${true}"/>
                             </jsp:include>
                         </c:forEach>
                     </c:when>
@@ -43,6 +47,7 @@
                         <jsp:include page="../components/post.jsp">
                             <jsp:param name="username" value="Artemis"/>
                             <jsp:param name="content" value="Me parece que você acabou de aterrisar! Adicione amigos para começar a interagir. Faça uma postagem agora mesmo!"/>
+                            <jsp:param name="showFooter" value="${false}"/>
                         </jsp:include>
                     </c:otherwise>
                 </c:choose>
