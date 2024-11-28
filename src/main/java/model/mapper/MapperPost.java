@@ -10,11 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class MapperPost {
-    private DataSource dataSource;
-    private PostDao postDao;
 
-    public Post mapResultSetToPost (ResultSet rs) throws SQLException {
-        var userDao = new UserDao(this.dataSource);
+    public Post mapResultSetToPost (ResultSet rs, PostDao postDao, UserDao userDao) throws SQLException {
         Post post = new Post();
         post.setId(rs.getInt("ID"));
         post.setContent(rs.getString("CONTENT"));
@@ -25,8 +22,7 @@ public class MapperPost {
         return post;
     }
 
-    public PostDto mapResultSetToPostDto (ResultSet rs) throws SQLException {
-        var userDao = new UserDao(this.dataSource);
+    public PostDto mapResultSetToPostDto (ResultSet rs, UserDao userDao) throws SQLException {
         PostDto post = new PostDto(
                 rs.getInt("ID"),
                 rs.getString("CONTENT"),
@@ -35,7 +31,6 @@ public class MapperPost {
                 userDao.getUserById(rs.getInt("USER_ID")).get(),
                 rs.getBoolean("IS_LIKED")
         );
-
         return post;
     }
 

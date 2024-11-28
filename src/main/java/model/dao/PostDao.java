@@ -30,7 +30,7 @@ public class PostDao {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(mapperPost.mapResultSetToPost(rs));
+                    return Optional.of(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
@@ -48,7 +48,7 @@ public class PostDao {
             stmt.setString(1, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()){
-                    posts.add(mapperPost.mapResultSetToPost(rs));
+                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
@@ -121,7 +121,7 @@ public class PostDao {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    posts.add(mapperPost.mapResultSetToPost(rs));
+                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
@@ -145,7 +145,7 @@ public class PostDao {
             stmt.setInt(1,id);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    posts.add(mapperPost.mapResultSetToPostDto(rs));
+                    posts.add(mapperPost.mapResultSetToPostDto(rs, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
