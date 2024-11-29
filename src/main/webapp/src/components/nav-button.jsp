@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<a class="btn btn-secondary text-start p-2" href="${pageContext.request.contextPath}${param.href}">
+<a class="btn bg-body-secondary text-start p-2" href="${pageContext.request.contextPath}${param.href}">
     <c:choose>
         <c:when test="${param.icon == 'feed'}">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-view-stacked" viewBox="0 0 16 16">
