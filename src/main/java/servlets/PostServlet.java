@@ -84,7 +84,7 @@ public class PostServlet extends HttpServlet {
 
             if(post.isPresent()){
                 request.setAttribute("post", post.get());
-                request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
+                request.getRequestDispatcher("/src/views/threads.jsp").forward(request, response);
             } else {
                 //TODO
             }
