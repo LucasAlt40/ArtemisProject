@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import model.dao.PostDao;
 import model.dao.RequestDao;
 import model.dao.UserDao;
+import model.dto.PostDto;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
@@ -74,7 +75,7 @@ public class PostServlet extends HttpServlet {
 
     private void viewPostById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String idParam = request.getParameter("id");
-        Optional<Post> post = Optional.empty();
+            Optional<PostDto> post = Optional.empty();
 
         try{
             if(idParam != null && !idParam.isEmpty()){

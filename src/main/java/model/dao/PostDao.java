@@ -22,13 +22,13 @@ public class PostDao {
         this.mapperPost = new MapperPost();
     }
 
-    public Optional<Post> getPostById(int id) {
+    public Optional<PostDto> getPostById(int id) {
         String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE ID= ?";
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return Optional.of(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
+                    return Optional.of(mapperPost.mapResultSetToPostDto(rs, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
