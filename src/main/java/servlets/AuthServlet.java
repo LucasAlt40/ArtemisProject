@@ -44,6 +44,9 @@ public class AuthServlet extends HttpServlet {
             case "signin":
                 signin(request, response);
                 break;
+            case "signout":
+                signout(request, response);
+                break;
             case null, default:
                 break;
         }
@@ -53,15 +56,11 @@ public class AuthServlet extends HttpServlet {
 
         String username = req.getParameter("username");
         String email = req.getParameter("email");
-//        String pathProfilePicture = req.getParameter("pathProfilePicture");
-//        String biografy = req.getParameter("biografy");
         String password = req.getParameter("password");
 
         User user = new User();
         user.setUsername(username);
         user.setEmail(email);
-//        user.setPathProfilePicture(pathProfilePicture);
-//        user.setBiografy(biografy);
         user.setPassword(PasswordEncoder.encode(password));
 
         UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
@@ -94,5 +93,11 @@ public class AuthServlet extends HttpServlet {
             req.setAttribute("result", "loginError");
             req.getRequestDispatcher("/src/views/signin.jsp").forward(req, resp);
         }
+    }
+
+    private void signout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        session.invalidate();
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 }

@@ -57,8 +57,8 @@ public class PostServlet extends HttpServlet {
             case "like":
                 likePost(request, response);
                 break;
-            case "deslike":
-                deslikePost(request, response);
+            case "dislike":
+                dislikePost(request, response);
                 break;
             case null, default:
                 utils.viewFeed(request, response, postDao);
@@ -78,14 +78,14 @@ public class PostServlet extends HttpServlet {
 
             if(post.isPresent()){
                 request.setAttribute("post", post.get());
-                request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
+                request.getRequestDispatcher("/src/views/threads.jsp").forward(request, response);
             } else {
                 //TODO
             }
         }catch (NumberFormatException e){
             request.setAttribute("error", "ID do post inválido.");
             //TODO
-            request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+            request.getRequestDispatcher("/post?action=feed").forward(request, response);
         }
 
     }
@@ -106,26 +106,29 @@ public class PostServlet extends HttpServlet {
 
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
-            request.getRequestDispatcher("/post?action=feed").forward(request, response);
+            utils.viewFeed(request, response, postDao);
         } else {
             System.out.println("ERRO");
         }
 
     }
 
-    public Boolean likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
-        return postDao.likePost(idPost, user.getId());
+        if(postDao.likePost(idPost, user.getId())) {
+            utils.viewFeed(request, response, postDao);
+        }
     }
-    public Boolean deslikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+    public void dislikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
-        return postDao.deslikePost(idPost, user.getId());
+        if(postDao.deslikePost(idPost, user.getId())) {
+            utils.viewFeed(request, response, postDao);
+        }
     }
-
-
 
 }

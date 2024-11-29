@@ -108,7 +108,7 @@ public class UserDao {
     public Optional<User> getUserByEmailAndPassword(String email, String password) {
         String passwordEncripted = PasswordEncoder.encode(password);
 
-        String sql = "SELECT id, username, email FROM USER_ARTEMIS WHERE email = ? AND password = ?";
+        String sql = "SELECT ID, NAME, USERNAME, EMAIL FROM USER_ARTEMIS WHERE email = ? AND password = ?";
         Optional<User> optional = Optional.empty();
 
         try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -119,8 +119,9 @@ public class UserDao {
                 if (rs.next()) {
                     User user = new User();
                     user.setId(rs.getInt(1));
-                    user.setUsername(rs.getString(2));
-                    user.setEmail(rs.getString(3));;
+                    user.setName(rs.getString(2));
+                    user.setUsername(rs.getString(3));
+                    user.setEmail(rs.getString(4));
 
                     optional = Optional.of(user);
                 }
