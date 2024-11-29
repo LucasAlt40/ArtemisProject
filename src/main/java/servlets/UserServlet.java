@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.dao.PostDao;
 import model.dao.UserDao;
+import model.dto.PostDto;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
@@ -85,10 +86,11 @@ public class UserServlet extends HttpServlet {
 
     private void viewPostsByUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
+        User user = utils.getUserFromSession(request);
 
-        List<Post> posts;
+        List<PostDto> posts;
         if(username != null && !username.isEmpty()) {
-            posts = postDao.getPostsByUsername(username);
+            posts = postDao.getPostsByUsername(username, user.getId());
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
         }

@@ -37,16 +37,25 @@ public class PostDao {
         return Optional.empty();
     }
 
-    public List<Post> getPostsByUsername(String username) {
-        String sql = "SELECT P.ID as ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID " +
-                "FROM POST P JOIN USER_ARTEMIS U ON P.USER_ID = U.ID " +
-                "WHERE USERNAME = ? AND P.THREAD_ID IS NULL ORDER BY P.POST_DATE DESC";
-        List<Post> posts = new ArrayList();
+    public List<PostDto> getPostsByUsername(String username, Integer userId) {
+        String sql = "SELECT P.ID AS ID, P.CONTENT, P.LIKES_QUANTITY, P.COMMENTS_QUANTITY, P.POST_DATE, P.USER_ID, P.THREAD_ID, " +
+                "    CASE " +
+                "        WHEN PL.ID_USER IS NOT NULL THEN 1 " +
+                "        ELSE 0 " +
+                "    END AS IS_LIKED " +
+                "FROM POST P " +
+                "JOIN USER_ARTEMIS U ON P.USER_ID = U.ID " +
+                "LEFT JOIN POST_LIKES PL ON P.ID = PL.ID_POST AND PL.ID_USER = ? " +
+                "WHERE U.USERNAME = ? AND P.THREAD_ID IS NULL " +
+                "ORDER BY P.POST_DATE DESC";
+
+        List<PostDto> posts = new ArrayList<>();
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, username);
+            stmt.setInt(1, userId); // ID do usuário logado para verificar se ele curtiu os posts
+            stmt.setString(2, username);
             try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()){
-                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
+                while (rs.next()) {
+                    posts.add(mapperPost.mapResultSetToPostDto(rs, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
@@ -54,6 +63,7 @@ public class PostDao {
         }
         return posts;
     }
+
 
     public Boolean sendPost(Post post, Integer threadId) {
         String insertSql = "INSERT INTO POST (ID, CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, SYSDATE, ?, ?)";
