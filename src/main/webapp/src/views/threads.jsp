@@ -18,9 +18,8 @@
                     <jsp:include page="../components/post.jsp">
                         <jsp:param name="username" value="${post.user.username}"/>
                         <jsp:param name="content" value="${post.content}"/>
-                        <jsp:param name="isLiked" value="${true}"/>
-                        <jsp:param name="likesQuantity" value="${post.likesQuantity}"/>
                         <jsp:param name="postId" value="${post.id}"/>
+                        <jsp:param name="showFooter" value="${false}"/>
                     </jsp:include>
 
                     <div class="mb-3">
@@ -46,9 +45,6 @@
                                 <jsp:include page="../components/post.jsp">
                                     <jsp:param name="username" value="${thread.user.username}"/>
                                     <jsp:param name="content" value="${thread.content}"/>
-                                    <jsp:param name="isLiked" value="${thread.isLiked}"/>
-                                    <jsp:param name="likesQuantity" value="${thread.likesQuantity}"/>
-                                    <jsp:param name="commentsQuantity" value="${thread.commentsQuantity}"/>
                                     <jsp:param name="postId" value="${thread.id}"/>
                                     <jsp:param name="showFooter" value="${true}"/>
                                 </jsp:include>

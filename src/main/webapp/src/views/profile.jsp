@@ -25,7 +25,8 @@
                             <jsp:include page="../components/post.jsp">
                                 <jsp:param name="username" value="${post.user.username}"/>
                                 <jsp:param name="content" value="${post.content}"/>
-                                <jsp:param name="isLiked" value="${true}"/>
+                                <jsp:param name="isLiked" value="${post.isLike}"/>
+                                <jsp:param name="likesQuantity" value="${post.likesQuantity}"/>
                                 <jsp:param name="likesQuantity" value="${post.likesQuantity}"/>
                                 <jsp:param name="postId" value="${post.id}"/>
                                 <jsp:param name="showFooter" value="${true}"/>
