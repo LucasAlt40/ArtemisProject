@@ -43,7 +43,7 @@
                         <jsp:include page="/src/components/nav-button.jsp">
                             <jsp:param name="icon" value="profile"/>
                             <jsp:param name="text" value="Profile"/>
-                            <jsp:param name="href" value="/user?action=viewPostsByUser"/>
+                            <jsp:param name="href" value="/user?action=viewPostsByUser&username=${username}"/>
                         </jsp:include>
 
                         <jsp:include page="/src/components/nav-button.jsp">

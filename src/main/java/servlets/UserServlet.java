@@ -92,6 +92,8 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
         }
+
+        request.getRequestDispatcher("/post?action=feed").forward(request, response);
     }
 
 }
