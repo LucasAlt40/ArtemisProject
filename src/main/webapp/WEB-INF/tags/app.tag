@@ -5,8 +5,6 @@
 <%@attribute name="name" required="true"%>
 <%@attribute name="username" required="true"%>
 
-<%--<c:set var="names" value="${fn:split(username,' ')}"/>--%>
-
 <t:root>
     <jsp:body>
         <div class="container py-5">
