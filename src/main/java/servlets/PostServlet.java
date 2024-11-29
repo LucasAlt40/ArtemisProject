@@ -63,6 +63,9 @@ public class PostServlet extends HttpServlet {
             case "delete":
                 deletePost(request, response);
                 break;
+            case "edit":
+                editPostContent(request, response);
+                break;
             case null, default:
                 utils.viewFeed(request, response, postDao);
                 break;
@@ -138,4 +141,14 @@ public class PostServlet extends HttpServlet {
 
         return postDao.deletePost(idPost);
     }
+
+    public void editPostContent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Integer idPost = Integer.parseInt(request.getParameter("idPost"));
+        String newContent = request.getParameter("newContent");
+
+        if (postDao.editPostContent(idPost, newContent)) {
+            utils.viewFeed(request, response, postDao);
+        }
+    }
+
 }
