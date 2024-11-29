@@ -18,7 +18,7 @@ public class UserDao {
     }
 
     public Optional<User> getUserById(int id) {
-        String sql = "SELECT ID, USERNAME, PASSWORD, EMAIL, NAME, FRIENDS_QUANTITY, BIOGRAFY, PATH_PROFILE_PICTURE FROM USER_ARTEMIS WHERE ID = ?";
+        String sql = "SELECT ID, USERNAME, PASSWORD, EMAIL, NAME, FRIENDS_QUANTITY, BIOGRAPHY, PATH_PROFILE_PICTURE FROM USER_ARTEMIS WHERE ID = ?";
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -34,7 +34,7 @@ public class UserDao {
 
 
     public Optional<User> getUserByUsername(String username) {
-        String sql = "SELECT ID, USERNAME, PASSWORD, NAME, FRIENDS_QUANTITY, EMAIL, BIOGRAFY, PATH_PROFILE_PICTURE FROM USER_ARTEMIS WHERE USERNAME = ?";
+        String sql = "SELECT ID, USERNAME, PASSWORD, NAME, FRIENDS_QUANTITY, EMAIL, BIOGRAPHY, PATH_PROFILE_PICTURE FROM USER_ARTEMIS WHERE USERNAME = ?";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, username);
@@ -50,7 +50,7 @@ public class UserDao {
     }
 
     public Optional<User> getUserByEmail(String email) {
-        String sql = "SELECT ID, USERNAME, PASSWORD, EMAIL, NAME, FRIENDS_QUANTITY, BIOGRAFY, PATH_PROFILE_PICTURE FROM USER_ARTEMIS WHERE EMAIL = ?";
+        String sql = "SELECT ID, USERNAME, PASSWORD, EMAIL, NAME, FRIENDS_QUANTITY, BIOGRAPHY, PATH_PROFILE_PICTURE FROM USER_ARTEMIS WHERE EMAIL = ?";
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, email);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -78,16 +78,13 @@ public class UserDao {
         return 0;
     }
 
-
-
-
     public Boolean save(User user){
         Optional<User> optional = getUserByEmail(user.getEmail());
         if(optional.isPresent()) {
             return false;
         }
 
-        String sql = "INSERT INTO USER_ARTEMIS (ID, USERNAME, PASSWORD, NAME, EMAIL, BIOGRAFY, PATH_PROFILE_PICTURE) VALUES (? ,?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO USER_ARTEMIS (ID, USERNAME, PASSWORD, NAME, EMAIL, BIOGRAPHY, PATH_PROFILE_PICTURE) VALUES (? ,?, ?, ?, ?, ?, ?)";
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, getLastUserId()+1);
@@ -95,7 +92,7 @@ public class UserDao {
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getName());
             ps.setString(5, user.getEmail());
-            ps.setString(6, user.getBiografy());
+            ps.setString(6, user.getBiography());
             ps.setString(7, user.getPathProfilePicture());
             ps.executeUpdate();
 
@@ -139,7 +136,7 @@ public class UserDao {
         user.setUsername(rs.getString("USERNAME"));
         user.setPassword(rs.getString("PASSWORD"));
         user.setEmail(rs.getString("EMAIL"));
-        user.setBiografy(rs.getString("BIOGRAFY"));
+        user.setBiography(rs.getString("BIOGRAPHY"));
         user.setPathProfilePicture(rs.getString("PATH_PROFILE_PICTURE"));
         user.setFriendsQuantity(rs.getInt("FRIENDS_QUANTITY"));
         return user;
