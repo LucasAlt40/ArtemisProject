@@ -126,7 +126,7 @@ public class PostServlet extends HttpServlet {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
-        if(postDao.deslikePost(idPost, user.getId())) {
+        if(postDao.dislikePost(idPost, user.getId())) {
             utils.viewFeed(request, response, postDao);
         }
     }

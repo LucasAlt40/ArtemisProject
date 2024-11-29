@@ -41,7 +41,6 @@
                                 <jsp:param name="postId" value="${post.id}"/>
                                 <jsp:param name="showFooter" value="${true}"/>
                             </jsp:include>
-                            <c:out value="${post.isLiked}"/>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>

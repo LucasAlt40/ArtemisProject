@@ -7,6 +7,7 @@ public class Post {
     private int id;
     private String content;
     private int likesQuantity;
+    private int commentsQuantity;
     private User user;
     private Date postDate;
     private List<Post> threads;
@@ -35,6 +36,14 @@ public class Post {
 
     public void setLikesQuantity(int likesQuantity) {
         this.likesQuantity = likesQuantity;
+    }
+
+    public int getCommentsQuantity() {
+        return commentsQuantity;
+    }
+
+    public void setCommentsQuantity(int commentsQuantity) {
+        this.commentsQuantity = commentsQuantity;
     }
 
     public User getUser() {

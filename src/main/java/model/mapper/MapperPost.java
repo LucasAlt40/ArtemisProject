@@ -16,6 +16,7 @@ public class MapperPost {
         post.setId(rs.getInt("ID"));
         post.setContent(rs.getString("CONTENT"));
         post.setLikesQuantity(rs.getInt("LIKES_QUANTITY"));
+        post.setCommentsQuantity(rs.getInt("COMMENTS_QUANTITY"));
         post.setPostDate(rs.getDate("POST_DATE"));
         post.setThreads(postDao.getThreadsByPostId(rs.getInt("ID")));
         post.setUser(userDao.getUserById(rs.getInt("USER_ID")).get());
@@ -27,6 +28,7 @@ public class MapperPost {
                 rs.getInt("ID"),
                 rs.getString("CONTENT"),
                 rs.getInt("LIKES_QUANTITY"),
+                rs.getInt("COMMENTS_QUANTITY"),
                 rs.getDate("POST_DATE"),
                 userDao.getUserById(rs.getInt("USER_ID")).get(),
                 rs.getBoolean("IS_LIKED")

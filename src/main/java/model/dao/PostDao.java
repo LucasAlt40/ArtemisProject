@@ -23,7 +23,7 @@ public class PostDao {
     }
 
     public Optional<Post> getPostById(int id) {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE ID= ?";
+        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE ID= ?";
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -38,7 +38,7 @@ public class PostDao {
     }
 
     public List<Post> getPostsByUsername(String username) {
-        String sql = "SELECT P.ID as ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID " +
+        String sql = "SELECT P.ID as ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID " +
                 "FROM POST P JOIN USER_ARTEMIS U ON P.USER_ID = U.ID " +
                 "WHERE USERNAME = ? AND P.THREAD_ID IS NULL ORDER BY P.POST_DATE DESC";
         List<Post> posts = new ArrayList();
@@ -55,28 +55,36 @@ public class PostDao {
         return posts;
     }
 
-    public Boolean sendPost(Post post, Integer theadId) {
-        String sql = "INSERT INTO POST (ID, CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, SYSDATE, ?, ?)";
+    public Boolean sendPost(Post post, Integer threadId) {
+        String insertSql = "INSERT INTO POST (ID, CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, SYSDATE, ?, ?)";
+        String updateCommentsSql = "UPDATE POST SET COMMENTS_QUANTITY = COMMENTS_QUANTITY + 1 WHERE ID = ?";
 
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+             PreparedStatement updateStmt = conn.prepareStatement(updateCommentsSql)) {
 
-            stmt.setInt(1, getLastPostId() + 1);
-            stmt.setString(2, post.getContent());
-            stmt.setInt(3, post.getUser().getId());
+            insertStmt.setInt(1, getLastPostId() + 1);
+            insertStmt.setString(2, post.getContent());
+            insertStmt.setInt(3, post.getUser().getId());
 
-            if(theadId != null && theadId > 0){
-                stmt.setInt(4, theadId);
+            if (threadId != null && threadId > 0) {
+                updateStmt.setInt(1, threadId);
+                updateStmt.executeUpdate();
+
+                insertStmt.setInt(4, threadId);
             } else {
-                stmt.setNull(4, 0);
+                insertStmt.setNull(4, java.sql.Types.INTEGER);
             }
-            stmt.executeUpdate();
+
+            insertStmt.executeUpdate();
             return true;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-
     }
+
 
     public Boolean likePost(Integer postId, Integer userId) {
         String sql = "INSERT INTO POST_LIKES VALUES (?,?)";
@@ -94,7 +102,7 @@ public class PostDao {
         return false;
     }
 
-    public Boolean deslikePost(Integer postId, Integer userId) {
+    public Boolean dislikePost(Integer postId, Integer userId) {
         String sql = "DELETE POST_LIKES WHERE ID_POST = ? AND ID_USER =?";
         String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY - 1) WHERE ID = ?";
 
@@ -112,7 +120,7 @@ public class PostDao {
     }
 
     public List<Post> getThreadsByPostId(Integer id) {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE THREAD_ID= ?";
+        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE THREAD_ID= ?";
         List<Post> posts = new ArrayList();
 
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -130,7 +138,7 @@ public class PostDao {
     }
 
     public List<PostDto> getFeed(Integer id) {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, POST_DATE, USER_ID,\n" +
+        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID,\n" +
                 "    CASE\n" +
                 "        WHEN POST_LIKES.ID_USER IS NOT NULL THEN 1\n" +
                 "        ELSE 0\n" +
