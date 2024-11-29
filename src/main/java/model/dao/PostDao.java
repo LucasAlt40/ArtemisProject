@@ -74,6 +74,21 @@ public class PostDao {
 
     }
 
+    public Boolean deletePost(Integer idPost){
+//        String sql1 = "DELETE POST_LIKES WHERE ID_POST = ?";
+        String sql = "DELETE FROM POST WHERE ID = ?";
+        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);){
+            stmt.setLong(1, idPost);
+            stmt.executeUpdate();
+            return true;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
     public Boolean likePost(Integer postId, Integer userId) {
         String sql = "INSERT INTO POST_LIKES VALUES (?,?)";
         String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY + 1) WHERE ID = ?";
