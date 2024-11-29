@@ -1,18 +1,30 @@
-package model.entity;
+package model.dto;
+
+import model.entity.User;
 
 import java.util.Date;
-import java.util.List;
 
-public class Post {
+public class PostDto {
     private int id;
     private String content;
     private int likesQuantity;
     private int commentsQuantity;
-    private User user;
     private Date postDate;
-    private List<Post> threads;
+    private User user;
+    private Boolean isLiked;
 
-    public Post() {}
+    public PostDto() {
+    }
+
+    public PostDto(int id, String content, int likesQuantity, int commentsQuantity, Date postDate, User user, Boolean isLiked) {
+        this.id = id;
+        this.content = content;
+        this.likesQuantity = likesQuantity;
+        this.commentsQuantity = commentsQuantity;
+        this.postDate = postDate;
+        this.user = user;
+        this.isLiked = isLiked;
+    }
 
     public int getId() {
         return id;
@@ -46,14 +58,6 @@ public class Post {
         this.commentsQuantity = commentsQuantity;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Date getPostDate() {
         return postDate;
     }
@@ -62,11 +66,20 @@ public class Post {
         this.postDate = postDate;
     }
 
-    public List<Post> getThreads() {
-        return threads;
+    public User getUser() {
+        return user;
     }
 
-    public void setThreads(List<Post> threads) {
-        this.threads = threads;
+    public void setUser(User user) {
+        this.user = user;
     }
+
+    public Boolean getIsLiked() {
+        return isLiked;
+    }
+
+    public void setIsLiked(Boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+
 }

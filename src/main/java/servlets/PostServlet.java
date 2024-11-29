@@ -57,8 +57,8 @@ public class PostServlet extends HttpServlet {
             case "like":
                 likePost(request, response);
                 break;
-            case "deslike":
-                deslikePost(request, response);
+            case "dislike":
+                dislikePost(request, response);
                 break;
             case "delete":
                 deletePost(request, response);
@@ -127,19 +127,21 @@ public class PostServlet extends HttpServlet {
             utils.viewFeed(request, response, postDao);
         }
     }
-    public void deslikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void dislikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
-        if(postDao.deslikePost(idPost, user.getId())) {
+        if(postDao.dislikePost(idPost, user.getId())) {
             utils.viewFeed(request, response, postDao);
         }
     }
 
-    public Boolean deletePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void deletePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
 
-        return postDao.deletePost(idPost);
+        if(postDao.deletePost(idPost)) {
+            utils.viewFeed(request, response, postDao);
+        }
     }
 
     public void editPostContent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
