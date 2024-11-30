@@ -4,10 +4,7 @@ import model.entity.Post;
 import model.mapper.MapperPost;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -101,7 +98,11 @@ public class PostDao {
             stmt.setInt(2, postId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if(rs.next()) {
-                    return true;
+                    System.out.println(rs.getInt("ID_POST"));
+                    System.out.println( userId);
+                    if(rs.getInt("ID_POST") > 0) {
+                        return true;
+                    }
                 }
             }
         } catch (SQLException e) {
