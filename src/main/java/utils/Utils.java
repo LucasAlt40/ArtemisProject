@@ -6,16 +6,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.dao.PostDao;
 import model.entity.User;
+import model.mapper.MapperPost;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class Utils {
 
-    public  void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException {
+    private MapperPost mapperPost;
+
+    public Utils() {
+        mapperPost = new MapperPost();
+    }
+
+    public void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException, SQLException {
        User user = this.getUserFromSession(request);
-       var teste = postDao.getFeed(user.getId());
         if (user != null) {
-            request.setAttribute("posts", teste);
+            request.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(), postDao));
         }
         request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
     }

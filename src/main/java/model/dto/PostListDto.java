@@ -4,7 +4,7 @@ import model.entity.User;
 
 import java.util.Date;
 
-public class PostDto {
+public class PostListDto {
     private int id;
     private String content;
     private int likesQuantity;
@@ -13,10 +13,10 @@ public class PostDto {
     private User user;
     private Boolean isLiked;
 
-    public PostDto() {
+    public PostListDto() {
     }
 
-    public PostDto(int id, String content, int likesQuantity, int commentsQuantity, Date postDate, User user, Boolean isLiked) {
+    public PostListDto(int id, String content, int likesQuantity, int commentsQuantity, Date postDate, User user, Boolean isLiked) {
         this.id = id;
         this.content = content;
         this.likesQuantity = likesQuantity;

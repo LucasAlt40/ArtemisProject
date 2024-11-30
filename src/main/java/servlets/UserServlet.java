@@ -7,13 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.dao.PostDao;
 import model.dao.UserDao;
-import model.dto.PostDto;
-import model.entity.Post;
+import model.dto.PostListDto;
 import model.entity.User;
+import model.mapper.MapperPost;
 import utils.DataSourceSearcher;
 import utils.Utils;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,25 +24,35 @@ public class UserServlet extends HttpServlet {
     UserDao userDao;
     PostDao postDao;
     Utils utils;
+    MapperPost mapperPost;
 
     public UserServlet() {
         super();
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
         this.postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
         this.utils = new Utils();
+        this.mapperPost = new MapperPost();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        chooseOption(req, resp);
+        try {
+            chooseOption(req, resp);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        chooseOption(req, resp);
+        try {
+            chooseOption(req, resp);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void chooseOption(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void chooseOption(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String action = request.getParameter("action");
 
         switch (action) {
@@ -84,13 +95,12 @@ public class UserServlet extends HttpServlet {
         }
     }
 
-    private void viewPostsByUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void viewPostsByUsername(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String username = request.getParameter("username");
-        User user = utils.getUserFromSession(request);
 
-        List<PostDto> posts;
+        List<PostListDto> posts;
         if(username != null && !username.isEmpty()) {
-            posts = postDao.getPostsByUsername(username, user.getId());
+            posts = mapperPost.mapPostListEntityToPostListDto(postDao.getPostsByUsername(username), postDao);
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
         }
