@@ -1,6 +1,5 @@
 package model.dao;
 
-import model.dto.PostDto;
 import model.entity.Post;
 import model.mapper.MapperPost;
 
@@ -16,46 +15,22 @@ import java.util.Optional;
 public class PostDao {
     private DataSource dataSource;
     private MapperPost mapperPost;
+    private final String sqlParams = "ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID";
 
-    public PostDao(DataSource dts){
+    public PostDao(DataSource dts) {
         this.dataSource = dts;
         this.mapperPost = new MapperPost();
+
     }
 
-    public Optional<PostDto> getPostById(int id) {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE ID= ?";
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return Optional.of(mapperPost.mapResultSetToPostDto(rs, new UserDao(this.dataSource)));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
+    public List<Post> getFeed() {
+        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID FROM POST WHERE THREAD_ID IS NULL ORDER BY POST_DATE DESC";
+        List<Post> posts = new ArrayList<>();
 
-    public List<PostDto> getPostsByUsername(String username, Integer userId) {
-        String sql = "SELECT P.ID AS ID, P.CONTENT, P.LIKES_QUANTITY, P.COMMENTS_QUANTITY, P.POST_DATE, P.USER_ID, P.THREAD_ID, " +
-                "    CASE " +
-                "        WHEN PL.ID_USER IS NOT NULL THEN 1 " +
-                "        ELSE 0 " +
-                "    END AS IS_LIKED " +
-                "FROM POST P " +
-                "JOIN USER_ARTEMIS U ON P.USER_ID = U.ID " +
-                "LEFT JOIN POST_LIKES PL ON P.ID = PL.ID_POST AND PL.ID_USER = ? " +
-                "WHERE U.USERNAME = ? AND P.THREAD_ID IS NULL " +
-                "ORDER BY P.POST_DATE DESC";
-
-        List<PostDto> posts = new ArrayList<>();
         try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId); // ID do usuário logado para verificar se ele curtiu os posts
-            stmt.setString(2, username);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    posts.add(mapperPost.mapResultSetToPostDto(rs, new UserDao(this.dataSource)));
+                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
             }
         } catch (SQLException e) {
@@ -64,6 +39,77 @@ public class PostDao {
         return posts;
     }
 
+    public List<Post> getThreadsByPostId(Integer id) {
+
+        String sql = "SELECT " + sqlParams + " FROM POST WHERE THREAD_ID= ?";
+        List<Post> posts = new ArrayList();
+
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return posts;
+    }
+
+    public Optional<Post> getPostById(int id) {
+        String sql = "SELECT " + sqlParams + " FROM POST WHERE ID= ?";
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public List<Post> getPostsByUsername(String username) {
+        String sql = "SELECT P.ID AS ID, P.CONTENT, P.LIKES_QUANTITY, P.COMMENTS_QUANTITY, P.POST_DATE, P.USER_ID, P.THREAD_ID\n" +
+                "FROM POST P\n" +
+                "JOIN USER_ARTEMIS U ON P.USER_ID = U.ID\n" +
+                "WHERE U.USERNAME = ? AND P.THREAD_ID IS NULL\n" +
+                "ORDER BY P.POST_DATE DESC";
+
+        List<Post> posts = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return posts;
+    }
+
+    public Boolean userLikedPost(int userId, int postId) {
+        String sql = "SELECT ID_POST FROM POST_LIKES WHERE ID_USER = ? AND ID_POST = ?";
+        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, postId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if(rs.next()) {
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
     public Boolean sendPost(Post post, Integer threadId) {
         String insertSql = "INSERT INTO POST (ID, CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, SYSDATE, ?, ?)";
@@ -112,14 +158,14 @@ public class PostDao {
         return false;
     }
 
-    public Boolean deletePost(Integer idPost){
+    public Boolean deletePost(Integer idPost) {
         String sql = "DELETE FROM POST WHERE ID = ?";
-        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);){
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setLong(1, idPost);
             stmt.executeUpdate();
             return true;
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -136,7 +182,7 @@ public class PostDao {
             stmt.executeUpdate();
             stmt2.executeUpdate();
             return true;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
@@ -146,58 +192,17 @@ public class PostDao {
         String sql = "DELETE POST_LIKES WHERE ID_POST = ? AND ID_USER =?";
         String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY - 1) WHERE ID = ?";
 
-        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)){
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
             stmt.setInt(1, postId);
             stmt.setInt(2, userId);
             stmt2.setInt(1, postId);
             stmt.executeUpdate();
             stmt2.executeUpdate();
             return true;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public List<Post> getThreadsByPostId(Integer id) {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID, THREAD_ID FROM POST WHERE THREAD_ID= ?";
-        List<Post> posts = new ArrayList();
-
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return posts;
-    }
-
-    public List<PostDto> getFeed(Integer id) {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID,\n" +
-                "    CASE\n" +
-                "        WHEN POST_LIKES.ID_USER IS NOT NULL THEN 1\n" +
-                "        ELSE 0\n" +
-                "    END AS IS_LIKED\n" +
-                "FROM POST\n" +
-                "LEFT JOIN POST_LIKES ON POST.ID = POST_LIKES.ID_POST AND POST_LIKES.ID_USER = ? WHERE THREAD_ID IS NULL ORDER BY POST_DATE DESC";
-        List<PostDto> posts = new ArrayList<>();
-
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1,id);
-            try (ResultSet rs = stmt.executeQuery()) {
-                while (rs.next()) {
-                    posts.add(mapperPost.mapResultSetToPostDto(rs, new UserDao(this.dataSource)));
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return posts;
     }
 
     public Integer getLastPostId() {

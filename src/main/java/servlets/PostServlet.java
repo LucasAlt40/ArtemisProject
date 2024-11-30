@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import jakarta.servlet.http.*;
@@ -9,21 +10,23 @@ import jakarta.servlet.ServletException;
 import model.dao.PostDao;
 import model.dao.RequestDao;
 import model.dao.UserDao;
-import model.dto.PostDto;
+import model.dto.PostListDto;
+import model.dto.PostViewDto;
 import model.entity.Post;
 import model.entity.User;
+import model.mapper.MapperPost;
 import utils.DataSourceSearcher;
 import utils.Utils;
 
 @WebServlet("/post")
 public class PostServlet extends HttpServlet {
 
-    @Serial
     private static final long serialVersionUID = 1L;
     PostDao postDao;
     UserDao userDao;
     RequestDao requestDao;
     Utils utils;
+    MapperPost mapperPost;
 
     public PostServlet() {
         super();
@@ -31,19 +34,28 @@ public class PostServlet extends HttpServlet {
         this.userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
         this.requestDao = new RequestDao(DataSourceSearcher.getInstance().getDataSource());
         this.utils = new Utils();
+        this.mapperPost = new MapperPost();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        chooseOption(req, resp);
+        try {
+            chooseOption(req, resp);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        chooseOption(req, resp);
+        try {
+            chooseOption(req, resp);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private void chooseOption(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void chooseOption(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String action = request.getParameter("action");
 
         switch (action) {
@@ -69,35 +81,35 @@ public class PostServlet extends HttpServlet {
                 editPostContent(request, response);
                 break;
             case null, default:
+                utils.viewFeed(request, response, postDao);
                 break;
         }
     }
 
     private void viewPostById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         String idParam = request.getParameter("id");
-            Optional<PostDto> post = Optional.empty();
+        PostViewDto post = null;
 
         try{
             if(idParam != null && !idParam.isEmpty()){
                 int id = Integer.parseInt(idParam);
-                post = postDao.getPostById(id);
+                post = mapperPost.mapResultSetToPostViewDto(postDao.getPostById(id).get(), postDao);
             }
 
-            if(post.isPresent()){
-                request.setAttribute("post", post.get());
+            if(post != null){
+                request.setAttribute("post", post);
                 request.getRequestDispatcher("/src/views/threads.jsp").forward(request, response);
             } else {
                 //TODO
             }
-        }catch (NumberFormatException e){
+        }catch (SQLException e){
             request.setAttribute("error", "ID do post inválido.");
-            //TODO
             request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
         }
 
     }
 
-    private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    private void createPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         int threadId = 0;
 
         String content = request.getParameter("content");
@@ -120,7 +132,7 @@ public class PostServlet extends HttpServlet {
 
     }
 
-    public void likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void likePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
@@ -128,7 +140,7 @@ public class PostServlet extends HttpServlet {
             utils.viewFeed(request, response, postDao);
         }
     }
-    public void dislikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+    public void dislikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         User user = utils.getUserFromSession(request);
 
@@ -137,7 +149,7 @@ public class PostServlet extends HttpServlet {
         }
     }
 
-    public void deletePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void deletePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
 
         if(postDao.deletePost(idPost)) {
@@ -145,7 +157,7 @@ public class PostServlet extends HttpServlet {
         }
     }
 
-    public void editPostContent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void editPostContent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
         String newContent = request.getParameter("newContent");
 
