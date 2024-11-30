@@ -163,6 +163,7 @@ public class PostDao {
         String sql = "DELETE FROM POST WHERE ID = ?";
         try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt1 = conn.prepareStatement(sql1);){
             stmt.setLong(1, idPost);
+            stmt1.setLong(1, idPost);
             stmt1.executeUpdate();
             stmt.executeUpdate();
             return true;
