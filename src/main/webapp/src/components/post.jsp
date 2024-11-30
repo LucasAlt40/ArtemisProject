@@ -8,14 +8,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
+<c:set var="showOptions" value="${param.ownerPostId == user.id}" />
+
 <div id="post" class="card mb-3">
-    <div class="card-header">
+    <div class="card-header bg-secondary-subtle">
         <div class="d-flex justify-content-between">
-            <div>
-                <span>
-                    <c:out value="${param.username}"/>
-                </span>
-            </div>
+            <span>
+                <c:out value="${param.username}"/>
+            </span>
+            <c:if test="${showOptions == true}">
+                <div class="dropdown">
+                    <a class="btn p-0" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                            <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0m0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0"/>
+                        </svg>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/post?action=delete&idPost=${param.postId}">Excluir</a></li>
+                    </ul>
+                </div>
+            </c:if>
         </div>
     </div>
     <div class="card-body">

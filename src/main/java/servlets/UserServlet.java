@@ -73,7 +73,6 @@ public class UserServlet extends HttpServlet {
         String idParam = request.getParameter("id");
         Optional<User> user = Optional.empty();
 
-
         try {
             if (idParam != null && !idParam.isEmpty()) {
                 int id = Integer.parseInt(idParam);
@@ -86,12 +85,10 @@ public class UserServlet extends HttpServlet {
                 request.setAttribute("user", user.get());
                 request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
             } else {
-                request.setAttribute("error", "Usuário não encontrado.");
-                request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+                response.sendRedirect(request.getContextPath() + "/post?action=feed");
             }
         } catch (NumberFormatException e) {
-            request.setAttribute("error", "ID de usuário inválido.");
-            request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/post?action=feed");
         }
     }
 
@@ -103,9 +100,9 @@ public class UserServlet extends HttpServlet {
             posts = mapperPost.mapPostListEntityToPostListDto(postDao.getPostsByUsername(username), postDao, utils.getUserFromSession(request).getId());
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
+        }else{
+            response.sendRedirect(request.getContextPath() + "/post?action=feed");
         }
-
-        request.getRequestDispatcher("/post?action=feed").forward(request, response);
     }
 
 
