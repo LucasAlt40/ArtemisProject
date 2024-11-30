@@ -10,7 +10,7 @@
 
 <c:set var="action" value="${ param.isLiked == true ? 'dislike' : 'like' }"/>
 
-<form action="${pageContext.request.contextPath}/post?action=${action}&idPost=${param.postId}" method="POST">
+<a class="btn p-0" href="${pageContext.request.contextPath}/post?action=${action}&idPost=${param.postId}">
     <button type="submit" class="btn p-0">
         <c:choose>
             <c:when test="${param.isLiked == true}">
@@ -28,4 +28,4 @@
             <c:out value="${param.likesQuantity}"/>
         </span>
     </button>
-</form>
+</a>
