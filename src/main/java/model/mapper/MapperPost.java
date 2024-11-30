@@ -1,5 +1,6 @@
 package model.mapper;
 
+import jakarta.servlet.http.HttpServletRequest;
 import model.dao.PostDao;
 import model.dao.UserDao;
 import model.dto.PostListDto;
@@ -25,7 +26,7 @@ public class MapperPost {
         return post;
     }
 
-  public PostViewDto mapResultSetToPostViewDto (Post post, PostDao postDao) throws SQLException {
+  public PostViewDto mapResultSetToPostViewDto (Post post, PostDao postDao, int userId) throws SQLException {
       return new PostViewDto(
               post.getId(),
               post.getContent(),
@@ -33,12 +34,12 @@ public class MapperPost {
               post.getCommentsQuantity(),
               post.getPostDate(),
               post.getUser(),
-              postDao.userLikedPost(post.getUser().getId(), post.getId()),
-              mapPostListEntityToPostListDto(postDao.getThreadsByPostId(post.getId()), postDao)
+              postDao.userLikedPost(userId, post.getId()),
+              mapPostListEntityToPostListDto(postDao.getThreadsByPostId(post.getId()), postDao, userId)
       );
   }
 
-    public PostListDto mapPostEntityToPostListDto(Post post, PostDao postDao) throws SQLException {
+    public PostListDto mapPostEntityToPostListDto(Post post, PostDao postDao, int userId) throws SQLException {
         return new PostListDto(
                 post.getId(),
                 post.getContent(),
@@ -46,14 +47,14 @@ public class MapperPost {
                 post.getCommentsQuantity(),
                 post.getPostDate(),
                 post.getUser(),
-                postDao.userLikedPost(post.getUser().getId(), post.getId())
+                postDao.userLikedPost(userId, post.getId())
         );
     }
 
-    public List<PostListDto> mapPostListEntityToPostListDto(List<Post> postList, PostDao postDao) throws SQLException {
+    public List<PostListDto> mapPostListEntityToPostListDto(List<Post> postList, PostDao postDao, int userId) throws SQLException {
         List<PostListDto> postListDtoList = new ArrayList<>();
         for (Post post : postList) {
-            PostListDto postListDto = mapPostEntityToPostListDto(post, postDao);
+            PostListDto postListDto = mapPostEntityToPostListDto(post, postDao, userId);
             postListDtoList.add(postListDto);
         }
         return postListDtoList;
