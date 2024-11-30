@@ -11,7 +11,7 @@
 <c:set var="showOptions" value="${param.ownerPostId == user.id}" />
 
 <div id="post" class="card mb-3">
-    <div class="card-header">
+    <div class="card-header bg-secondary-subtle">
         <div class="d-flex justify-content-between">
             <span>
                 <c:out value="${param.username}"/>

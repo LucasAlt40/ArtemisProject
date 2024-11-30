@@ -11,7 +11,7 @@
 <c:set var="action" value="${ param.isLiked == true ? 'dislike' : 'like' }"/>
 
 <a class="btn p-0" href="${pageContext.request.contextPath}/post?action=${action}&idPost=${param.postId}">
-    <button type="submit" class="btn p-0">
+    <button type="submit" class="btn p-0 text-danger">
         <c:choose>
             <c:when test="${param.isLiked == true}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
