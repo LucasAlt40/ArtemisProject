@@ -98,8 +98,7 @@ public class PostDao {
             stmt.setInt(2, postId);
             try (ResultSet rs = stmt.executeQuery()) {
                 if(rs.next()) {
-                    System.out.println(rs.getInt("ID_POST"));
-                    System.out.println( userId);
+
                     if(rs.getInt("ID_POST") > 0) {
                         return true;
                     }
