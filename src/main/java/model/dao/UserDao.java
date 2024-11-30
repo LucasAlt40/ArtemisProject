@@ -95,7 +95,7 @@ public class UserDao {
             ps.setString(3, user.getPassword());
             ps.setString(4, user.getName());
             ps.setString(5, user.getEmail());
-            ps.setString(6, user.getBiografy());
+            ps.setString(6, user.getBiography());
             ps.setString(7, user.getPathProfilePicture());
             ps.executeUpdate();
 
@@ -139,7 +139,7 @@ public class UserDao {
         user.setUsername(rs.getString("USERNAME"));
         user.setPassword(rs.getString("PASSWORD"));
         user.setEmail(rs.getString("EMAIL"));
-        user.setBiografy(rs.getString("BIOGRAPHY"));
+        user.setBiography(rs.getString("BIOGRAPHY"));
         user.setPathProfilePicture(rs.getString("PATH_PROFILE_PICTURE"));
         user.setFriendsQuantity(rs.getInt("FRIENDS_QUANTITY"));
         return user;

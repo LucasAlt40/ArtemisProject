@@ -6,7 +6,7 @@ public class User {
     private String name;
     private String password;
     private String email;
-    private String biografy;
+    private String biography;
     private String pathProfilePicture;
     private Integer friendsQuantity;
 
@@ -44,12 +44,12 @@ public class User {
         this.email = email;
     }
 
-    public String getBiografy() {
-        return biografy;
+    public String getBiography() {
+        return biography;
     }
 
-    public void setBiografy(String biografy) {
-        this.biografy = biografy;
+    public void setBiography(String biography) {
+        this.biography = biography;
     }
 
     public String getPathProfilePicture() {
