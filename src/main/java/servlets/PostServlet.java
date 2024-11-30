@@ -137,7 +137,8 @@ public class PostServlet extends HttpServlet {
         User user = utils.getUserFromSession(request);
 
         if(postDao.likePost(idPost, user.getId())) {
-            utils.viewFeed(request, response, postDao);
+            response.sendRedirect(request.getContextPath() + "/post?action=feed");
+            //utils.viewFeed(request, response, postDao);
         }
     }
     public void dislikePost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
@@ -145,7 +146,8 @@ public class PostServlet extends HttpServlet {
         User user = utils.getUserFromSession(request);
 
         if(postDao.dislikePost(idPost, user.getId())) {
-            utils.viewFeed(request, response, postDao);
+            response.sendRedirect(request.getContextPath() + "/post?action=feed");
+            //utils.viewFeed(request, response, postDao);
         }
     }
 
