@@ -158,14 +158,16 @@ public class PostDao {
         return false;
     }
 
-    public Boolean deletePost(Integer idPost) {
+    public Boolean deletePost(Integer idPost){
+        String sql1 = "DELETE FROM POST_LIKES WHERE ID_POST = ?";
         String sql = "DELETE FROM POST WHERE ID = ?";
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt1 = conn.prepareStatement(sql1);){
             stmt.setLong(1, idPost);
+            stmt1.executeUpdate();
             stmt.executeUpdate();
             return true;
 
-        } catch (SQLException e) {
+        }catch (SQLException e){
             e.printStackTrace();
         }
         return false;
