@@ -18,6 +18,7 @@ import utils.Utils;
 @WebServlet("/post")
 public class PostServlet extends HttpServlet {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     PostDao postDao;
     UserDao userDao;
@@ -68,7 +69,6 @@ public class PostServlet extends HttpServlet {
                 editPostContent(request, response);
                 break;
             case null, default:
-                utils.viewFeed(request, response, postDao);
                 break;
         }
     }
@@ -79,7 +79,7 @@ public class PostServlet extends HttpServlet {
 
         try{
             if(idParam != null && !idParam.isEmpty()){
-                Integer id = Integer.parseInt(idParam);
+                int id = Integer.parseInt(idParam);
                 post = postDao.getPostById(id);
             }
 

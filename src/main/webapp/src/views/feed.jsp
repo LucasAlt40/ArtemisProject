@@ -37,7 +37,8 @@
                                 <jsp:param name="username" value="${post.user.username}"/>
                                 <jsp:param name="content" value="${post.content}"/>
                                 <jsp:param name="postId" value="${post.id}"/>
-                                <jsp:param name="showFooter" value="${true}"/>
+                                <jsp:param name="postId" value="${post.id}"/>
+                                <jsp:param name="ownerPostId" value="${post.user.id}"/>
                             </jsp:include>
                         </c:forEach>
                     </c:when>

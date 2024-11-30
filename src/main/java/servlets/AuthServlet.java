@@ -87,8 +87,7 @@ public class AuthServlet extends HttpServlet {
             session.setMaxInactiveInterval(600);
             session.setAttribute("user", user);
 
-            req.setAttribute("result", "loginSuccess");
-            req.getRequestDispatcher("/post?action=feed").forward(req, resp);
+            resp.sendRedirect(req.getContextPath() + "/post?action=feed");
         } else {
             req.setAttribute("result", "loginError");
             req.getRequestDispatcher("/src/views/signin.jsp").forward(req, resp);

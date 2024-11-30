@@ -13,10 +13,8 @@ public class Utils {
 
     public  void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException {
        User user = this.getUserFromSession(request);
-       var teste = postDao.getFeed(user.getId());
-        if (user != null) {
-            request.setAttribute("posts", teste);
-        }
+       var posts = postDao.getFeed(user.getId());
+        request.setAttribute("posts", posts);
         request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
     }
 
