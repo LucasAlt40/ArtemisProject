@@ -1,24 +1,22 @@
-package model.entity;
+package model.dto;
 
-public class User {
-    private int id;
+public class UserDetailsDto {
     private String username;
     private String name;
-    private String password;
-    private String email;
     private String biography;
     private String pathProfilePicture;
     private String pathProfileBanner;
     private Integer friendsQuantity;
 
-    public User() {}
+    public UserDetailsDto() {}
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public UserDetailsDto(String username, String name, String biography, String pathProfilePicture, String pathProfileBanner, Integer friendsQuantity) {
+        this.username = username;
+        this.name = name;
+        this.biography = biography;
+        this.pathProfilePicture = pathProfilePicture;
+        this.pathProfileBanner = pathProfileBanner;
+        this.friendsQuantity = friendsQuantity;
     }
 
     public String getUsername() {
@@ -29,20 +27,12 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBiography() {
@@ -61,27 +51,19 @@ public class User {
         this.pathProfilePicture = pathProfilePicture;
     }
 
-    public Integer getFriendsQuantity() {
-        return friendsQuantity;
-    }
-
-    public void setFriendsQuantity(Integer friendsQuantity) {
-        this.friendsQuantity = friendsQuantity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getPathProfileBanner() {
         return pathProfileBanner;
     }
 
     public void setPathProfileBanner(String pathProfileBanner) {
         this.pathProfileBanner = pathProfileBanner;
+    }
+
+    public Integer getFriendsQuantity() {
+        return friendsQuantity;
+    }
+
+    public void setFriendsQuantity(Integer friendsQuantity) {
+        this.friendsQuantity = friendsQuantity;
     }
 }
