@@ -8,9 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:set var="action" value="${ param.isLiked == true ? 'dislike' : 'like' }"/>
+<c:set var="action" value="${ param.isLiked == true ? 'dislikePost' : 'likePost' }"/>
 
-<a class="btn p-0" href="${pageContext.request.contextPath}/post?action=${action}&idPost=${param.postId}">
+<a class="btn p-0" href="${pageContext.request.contextPath}/ControllerServlet?action=${action}&idPost=${param.postId}">
     <button type="submit" class="btn p-0 text-danger">
         <c:choose>
             <c:when test="${param.isLiked == true}">

@@ -25,7 +25,7 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/post?action=delete&idPost=${param.postId}">Excluir</a></li>
+                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/ControllerServlet?action=deletePost&idPost=${param.postId}">Excluir</a></li>
                     </ul>
                 </div>
             </c:if>

@@ -21,4 +21,24 @@
         <param-name>post</param-name>
         <param-value>servlets.helpers.PostHelper</param-value>
     </context-param>
+    <context-param>
+        <param-name>addPost</param-name>
+        <param-value>servlets.helpers.AddPostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>likePost</param-name>
+        <param-value>servlets.helpers.LikePostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dislikePost</param-name>
+        <param-value>servlets.helpers.DislikePostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>deletePost</param-name>
+        <param-value>servlets.helpers.DeletePostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>editPost</param-name>
+        <param-value>servlets.helpers.EditPostHelper</param-value>
+    </context-param>
 </web-app>
