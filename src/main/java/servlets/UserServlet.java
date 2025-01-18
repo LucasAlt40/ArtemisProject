@@ -63,7 +63,7 @@ public class UserServlet extends HttpServlet {
                 viewPostsByUsername(request, response);
                 break;
             case null, default:
-                utils.viewFeed(request, response, postDao);
+               // utils.viewFeed(request, response, postDao);
                 break;
         }
     }

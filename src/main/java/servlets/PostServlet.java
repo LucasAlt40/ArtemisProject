@@ -59,14 +59,8 @@ public class PostServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         switch (action) {
-            case "viewById":
-                viewPostById(request, response);
-                break;
-            case "add":
+            case "addPost":
                 createPost(request, response);
-                break;
-            case "feed":
-                utils.viewFeed(request, response, postDao);
                 break;
             case "like":
                 likePost(request, response);
@@ -81,7 +75,7 @@ public class PostServlet extends HttpServlet {
                 editPostContent(request, response);
                 break;
             case null, default:
-                utils.viewFeed(request, response, postDao);
+
                 break;
         }
     }
@@ -125,7 +119,7 @@ public class PostServlet extends HttpServlet {
 
         if(postDao.sendPost(post, threadId)){
             request.setAttribute("success", "Post created");
-            utils.viewFeed(request, response, postDao);
+
         } else {
             System.out.println("ERRO");
         }
@@ -155,7 +149,7 @@ public class PostServlet extends HttpServlet {
         Integer idPost = Integer.parseInt(request.getParameter("idPost"));
 
         if(postDao.deletePost(idPost)) {
-            utils.viewFeed(request, response, postDao);
+            //utils.viewFeed(request, response, postDao);
         }
     }
 
@@ -164,7 +158,7 @@ public class PostServlet extends HttpServlet {
         String newContent = request.getParameter("newContent");
 
         if (postDao.editPostContent(idPost, newContent)) {
-            utils.viewFeed(request, response, postDao);
+            //utils.viewFeed(request, response, postDao);
         }
     }
 

@@ -17,4 +17,8 @@
         <param-name>feed</param-name>
         <param-value>servlets.helpers.FeedHelper</param-value>
     </context-param>
+    <context-param>
+        <param-name>post</param-name>
+        <param-value>servlets.helpers.PostHelper</param-value>
+    </context-param>
 </web-app>

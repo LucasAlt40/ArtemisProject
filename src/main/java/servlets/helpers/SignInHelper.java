@@ -27,7 +27,7 @@ public class SignInHelper implements Helper{
             return "/ControllerServlet?action=feed";
         } else {
             req.setAttribute("result", "loginError");
-            return "/src/views/signin.jsp";
+            return "signin.jsp";
         }
     }
 }

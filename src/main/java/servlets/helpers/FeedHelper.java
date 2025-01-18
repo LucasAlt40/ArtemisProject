@@ -18,7 +18,7 @@ public class FeedHelper implements Helper{
         if (user != null) {
             req.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(), postDao, user.getId()));
         }
-        return "/src/views/feed.jsp";
+        return "feed.jsp";
     }
 
     public User getUserFromSession(HttpServletRequest request) {

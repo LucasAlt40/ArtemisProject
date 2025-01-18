@@ -13,19 +13,7 @@ import java.sql.SQLException;
 
 public class Utils {
 
-    private MapperPost mapperPost;
-
-    public Utils() {
-        mapperPost = new MapperPost();
-    }
-
-    public void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException, SQLException {
-       User user = this.getUserFromSession(request);
-        if (user != null) {
-            request.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(), postDao, user.getId()));
-        }
-        request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
-    }
+    public Utils() {}
 
     public User getUserFromSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
