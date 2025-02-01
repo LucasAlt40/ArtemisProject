@@ -12,7 +12,7 @@
     <jsp:body>
         <div class="container">
             <div class="row justify-content-center align-items-center vh-100">
-                <form action="${pageContext.request.contextPath}/auth?action=signup" method="POST" class="col-3 needs-validation" novalidate>
+                <form action="${pageContext.request.contextPath}/ControllerServlet" method="POST" class="col-3 needs-validation" novalidate>
                     <h3 class="text-center">Criar conta</h3>
                     <div class="mb-3">
                         <input type="text" class="form-control" id="username" name="username" placeholder="usuário" required>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Cadastrar-se</button>
+                        <button type="submit" class="btn btn-primary" name="action" value=singUp"">Cadastrar-se</button>
                         <a href="${pageContext.request.contextPath}/signin.jsp" class="link-underline text-center">Já possuo uma conta, acessar.</a>
                     </div>
                 </form>

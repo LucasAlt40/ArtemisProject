@@ -14,6 +14,10 @@
         <param-value>servlets.helpers.SignOutHelper</param-value>
     </context-param>
     <context-param>
+        <param-name>signUp</param-name>
+        <param-value>servlets.helpers.SignUpHelper</param-value>
+    </context-param>
+    <context-param>
         <param-name>feed</param-name>
         <param-value>servlets.helpers.FeedHelper</param-value>
     </context-param>
@@ -40,5 +44,13 @@
     <context-param>
         <param-name>editPost</param-name>
         <param-value>servlets.helpers.EditPostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>profile</param-name>
+        <param-value>servlets.helpers.ViewUserHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>viewPost</param-name>
+        <param-value>servlets.helpers.ViewPostsHelper</param-value>
     </context-param>
 </web-app>

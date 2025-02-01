@@ -222,6 +222,4 @@ public class PostDao {
 
         return 0;
     }
-
-
 }
