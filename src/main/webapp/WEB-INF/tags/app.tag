@@ -41,7 +41,7 @@
                         <jsp:include page="/components/nav-button.jsp">
                             <jsp:param name="icon" value="profile"/>
                             <jsp:param name="text" value="Profile"/>
-                            <jsp:param name="href" value="/ControllerServlet?action=profile&username=${username}"/>
+                            <jsp:param name="href" value="/user?action=viewPostsByUser&username=${username}"/>
                         </jsp:include>
 
                         <jsp:include page="/components/nav-button.jsp">
