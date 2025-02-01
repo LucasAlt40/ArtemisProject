@@ -14,5 +14,6 @@
         <script defer src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
         <script defer src="${pageContext.request.contextPath}/js/theme.js"></script>
         <script defer src="${pageContext.request.contextPath}/js/formValidation.js"></script>
+        <script defer src="${pageContext.request.contextPath}/js/likePost.js"></script>
     </body>
 </html>
