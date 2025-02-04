@@ -112,27 +112,27 @@ public class PostDao {
     }
 
     public Boolean sendPost(Post post, Integer threadId) {
-        String insertSql = "INSERT INTO POST (ID, CONTENT, POST_DATE, USER_ID, THREAD_ID) VALUES (?, ?, SYSDATE, ?, ?)";
-        String updateCommentsSql = "UPDATE POST SET COMMENTS_QUANTITY = COMMENTS_QUANTITY + 1 WHERE ID = ?";
+        String procedureAddPost = "CALL ADD_POST(?,?,?)";
+        String procedurePlusComment = "CALL PLUS_COMMENT(?)";
 
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement insertStmt = conn.prepareStatement(insertSql);
-             PreparedStatement updateStmt = conn.prepareStatement(updateCommentsSql)) {
+             PreparedStatement insertStmt = conn.prepareCall(procedureAddPost);
+             PreparedStatement updateStmt = conn.prepareStatement(procedurePlusComment)) {
 
-            insertStmt.setInt(1, getLastPostId() + 1);
-            insertStmt.setString(2, post.getContent());
-            insertStmt.setInt(3, post.getUser().getId());
+            insertStmt.setString(1, post.getContent());
+            insertStmt.setInt(2, post.getUser().getId());
 
             if (threadId != null && threadId > 0) {
-                updateStmt.setInt(1, threadId);
-                updateStmt.executeUpdate();
+                insertStmt.setInt(3, threadId);
+                insertStmt.executeQuery();
 
-                insertStmt.setInt(4, threadId);
+                updateStmt.setInt(1, threadId);
+                updateStmt.executeQuery();
             } else {
-                insertStmt.setNull(4, java.sql.Types.INTEGER);
+                insertStmt.setNull(3, java.sql.Types.INTEGER);
             }
 
-            insertStmt.executeUpdate();
+            insertStmt.executeQuery();
             return true;
 
         } catch (SQLException e) {
