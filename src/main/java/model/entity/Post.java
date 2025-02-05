@@ -11,7 +11,7 @@ public class Post {
     private User user;
     private Date postDate;
     private List<Post> threads;
-    private Boolean liked;
+    private Boolean user_liked;
 
     public Post() {}
 
@@ -72,10 +72,10 @@ public class Post {
     }
 
     public Boolean getLiked() {
-        return liked;
+        return user_liked;
     }
 
     public void setLiked(Boolean liked) {
-        this.liked = liked;
+        this.user_liked = liked;
     }
 }
