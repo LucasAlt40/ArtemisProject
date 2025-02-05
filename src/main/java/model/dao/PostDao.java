@@ -2,6 +2,7 @@ package model.dao;
 
 import model.entity.Post;
 import model.mapper.MapperPost;
+import oracle.jdbc.OracleTypes;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -21,13 +22,21 @@ public class PostDao {
     }
 
     public List<Post> getFeed() {
-        String sql = "SELECT ID, CONTENT, LIKES_QUANTITY, COMMENTS_QUANTITY, POST_DATE, USER_ID FROM POST WHERE THREAD_ID IS NULL ORDER BY POST_DATE DESC";
         List<Post> posts = new ArrayList<>();
+        String sql = "{call get_feed(?, ?)}";
 
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            try (ResultSet rs = stmt.executeQuery()) {
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall(sql)) {
+
+            stmt.setInt(1, 7);
+            stmt.registerOutParameter(2, OracleTypes.CURSOR);
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(2)) {
                 while (rs.next()) {
-                    posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
+                    Post post = mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource));
+                   // post(rs.getInt("USER_LIKED") == 1);
+                    posts.add(post);
                 }
             }
         } catch (SQLException e) {
@@ -35,6 +44,7 @@ public class PostDao {
         }
         return posts;
     }
+
 
     public List<Post> getThreadsByPostId(Integer id) {
 
