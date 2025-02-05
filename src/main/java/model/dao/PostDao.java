@@ -173,14 +173,11 @@ public class PostDao {
 
 
     public Boolean likePost(Integer postId, Integer userId) {
-        String sql = "INSERT INTO POST_LIKES VALUES (?,?)";
-        String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY + 1) WHERE ID = ?";
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
-            stmt2.setInt(1, postId);
+        String sql = "CALL LIKE_POST(?, ?)";
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setInt(1, postId);
             stmt.setInt(2, userId);
-            stmt.executeUpdate();
-            stmt2.executeUpdate();
+            stmt.executeQuery();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
