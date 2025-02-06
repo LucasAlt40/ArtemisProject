@@ -11,7 +11,7 @@ public class Post {
     private User user;
     private Date postDate;
     private List<Post> threads;
-    private Boolean user_liked;
+    private Boolean user_liked; // provisorio
 
     public Post() {}
 

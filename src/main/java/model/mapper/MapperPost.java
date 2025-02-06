@@ -23,10 +23,12 @@ public class MapperPost {
         post.setPostDate(rs.getDate("POST_DATE"));
         post.setThreads(postDao.getThreadsByPostId(rs.getInt("ID")));
         post.setUser(userDao.getUserById(rs.getInt("USER_ID")).get());
+        post.setLiked(rs.getInt("USER_LIKED") == 1);
+
         return post;
     }
 
-  public PostViewDto mapResultSetToPostViewDto (Post post, PostDao postDao, int userId) throws SQLException {
+  public PostViewDto mapResultSetToPostViewDto (Post post, PostDao postDao) throws SQLException {
       return new PostViewDto(
               post.getId(),
               post.getContent(),
@@ -34,12 +36,12 @@ public class MapperPost {
               post.getCommentsQuantity(),
               post.getPostDate(),
               post.getUser(),
-              postDao.userLikedPost(userId, post.getId()),
-              mapPostListEntityToPostListDto(postDao.getThreadsByPostId(post.getId()), postDao, userId)
+              post.getLiked(),
+              mapPostListEntityToPostListDto(postDao.getThreadsByPostId(post.getId()))
       );
   }
 
-    public PostListDto mapPostEntityToPostListDto(Post post, PostDao postDao, int userId) throws SQLException {
+    public PostListDto mapPostEntityToPostListDto(Post post) throws SQLException {
         return new PostListDto(
                 post.getId(),
                 post.getContent(),
@@ -47,14 +49,14 @@ public class MapperPost {
                 post.getCommentsQuantity(),
                 post.getPostDate(),
                 post.getUser(),
-                postDao.userLikedPost(userId, post.getId())
+                post.getLiked()
         );
     }
 
-    public List<PostListDto> mapPostListEntityToPostListDto(List<Post> postList, PostDao postDao, int userId) throws SQLException {
+    public List<PostListDto> mapPostListEntityToPostListDto(List<Post> postList) throws SQLException {
         List<PostListDto> postListDtoList = new ArrayList<>();
         for (Post post : postList) {
-            PostListDto postListDto = mapPostEntityToPostListDto(post, postDao, userId);
+            PostListDto postListDto = mapPostEntityToPostListDto(post);
             postListDtoList.add(postListDto);
         }
         return postListDtoList;

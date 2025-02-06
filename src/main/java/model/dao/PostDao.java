@@ -21,21 +21,36 @@ public class PostDao {
 
     }
 
-    public List<Post> getFeed() {
+    public static void printResultSet(ResultSet rs) throws SQLException {
+        ResultSetMetaData metaData = rs.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+
+        while (rs.next()) {
+            for (int i = 1; i <= columnCount; i++) {
+                String columnName = metaData.getColumnName(i);
+                Object value = rs.getObject(i);
+
+                System.out.print(columnName + ": " + value + " | ");
+            }
+            System.out.println();
+        }
+    }
+
+    public List<Post> getFeed(int userID) {
         List<Post> posts = new ArrayList<>();
-        String sql = "{call get_feed(?, ?)}";
+        String sql = "CALL GET_FEED(?, ?)";
 
         try (Connection conn = dataSource.getConnection();
              CallableStatement stmt = conn.prepareCall(sql)) {
 
-            stmt.setInt(1, 7);
+            stmt.setInt(1, userID);
             stmt.registerOutParameter(2, OracleTypes.CURSOR);
             stmt.execute();
 
             try (ResultSet rs = (ResultSet) stmt.getObject(2)) {
                 while (rs.next()) {
                     Post post = mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource));
-                   // post(rs.getInt("USER_LIKED") == 1);
                     posts.add(post);
                 }
             }
