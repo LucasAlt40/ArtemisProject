@@ -11,6 +11,7 @@ import model.mapper.MapperPost;
 import java.io.IOException;
 import java.sql.SQLException;
 
+
 public class Utils {
 
     private MapperPost mapperPost;
@@ -31,5 +32,6 @@ public class Utils {
         HttpSession session = request.getSession(false);
         return (User) session.getAttribute("user");
     }
+
 
 }
