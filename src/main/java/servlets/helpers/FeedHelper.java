@@ -16,7 +16,7 @@ public class FeedHelper implements Helper{
         MapperPost mapperPost = new MapperPost();
         User user = this.getUserFromSession(req);
         if (user != null) {
-            req.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(), postDao, user.getId()));
+            req.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(user.getId())));
         }
         return "feed.jsp";
     }
