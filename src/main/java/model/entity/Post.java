@@ -12,6 +12,7 @@ public class Post {
     private Date postDate;
     private List<Post> threads;
     private Boolean user_liked; // provisorio
+    private List<String> images; // provisorio
 
     public Post() {}
 
@@ -77,5 +78,21 @@ public class Post {
 
     public void setLiked(Boolean liked) {
         this.user_liked = liked;
+    }
+
+    public Boolean getUser_liked() {
+        return user_liked;
+    }
+
+    public void setUser_liked(Boolean user_liked) {
+        this.user_liked = user_liked;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }

@@ -10,6 +10,7 @@ import model.entity.Post;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MapperPost {
@@ -25,6 +26,13 @@ public class MapperPost {
         post.setUser(userDao.getUserById(rs.getInt("USER_ID")).get());
         post.setLiked(rs.getInt("USER_LIKED") == 1);
 
+        String imagePaths = rs.getString("IMAGE_PATHS");
+        if (imagePaths != null && !imagePaths.isEmpty()) {
+            post.setImages(Arrays.asList(imagePaths.split(",")));
+        } else {
+            post.setImages(new ArrayList<>());
+        }
+
         return post;
     }
 
@@ -37,6 +45,7 @@ public class MapperPost {
               post.getPostDate(),
               post.getUser(),
               post.getLiked(),
+              post.getImages(),
               mapPostListEntityToPostListDto(postDao.getThreadsByPostId(post.getUser().getId(), post.getId()))
       );
   }
@@ -49,7 +58,8 @@ public class MapperPost {
                 post.getCommentsQuantity(),
                 post.getPostDate(),
                 post.getUser(),
-                post.getLiked()
+                post.getLiked(),
+                post.getImages()
         );
     }
 
