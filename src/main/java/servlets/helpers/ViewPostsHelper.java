@@ -35,8 +35,8 @@ public class ViewPostsHelper implements Helper {
             req.setAttribute("posts", posts);
             req.setAttribute("user", loggedUser);
             return "profile.jsp";
-        } else {
-            return "feed.jsp";
         }
+
+        return "feed.jsp";
     }
 }
