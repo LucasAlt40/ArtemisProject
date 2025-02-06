@@ -97,7 +97,7 @@ public class UserServlet extends HttpServlet {
 
         List<PostListDto> posts;
         if(username != null && !username.isEmpty()) {
-            posts = mapperPost.mapPostListEntityToPostListDto(postDao.getPostsByUsername(username));
+            posts = mapperPost.mapPostListEntityToPostListDto(postDao.getPostsByUsername(username, utils.getUserFromSession(request).getId()));
             request.setAttribute("posts", posts);
             request.getRequestDispatcher("/src/views/profile.jsp").forward(request, response);
         }else{

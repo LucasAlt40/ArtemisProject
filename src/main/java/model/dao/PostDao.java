@@ -111,17 +111,21 @@ public class PostDao {
     }
 
 
-    public List<Post> getPostsByUsername(String username) {
-        String sql = "SELECT P.ID AS ID, P.CONTENT, P.LIKES_QUANTITY, P.COMMENTS_QUANTITY, P.POST_DATE, P.USER_ID, P.THREAD_ID\n" +
-                "FROM POST P\n" +
-                "JOIN USER_ARTEMIS U ON P.USER_ID = U.ID\n" +
-                "WHERE U.USERNAME = ? AND P.THREAD_ID IS NULL\n" +
-                "ORDER BY P.POST_DATE DESC";
-
+    public List<Post> getPostsByUsername(String username, int userId) {
+        String procedureCall = "{ call GET_POSTS_BY_USERNAME(?, ?, ?) }";
         List<Post> posts = new ArrayList<>();
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall(procedureCall)) {
+
             stmt.setString(1, username);
-            try (ResultSet rs = stmt.executeQuery()) {
+            stmt.setInt(2, userId);
+
+            stmt.registerOutParameter(3, OracleTypes.CURSOR);
+
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(3)) {
                 while (rs.next()) {
                     posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
@@ -129,6 +133,7 @@ public class PostDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return posts;
     }
 
