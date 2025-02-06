@@ -116,26 +116,6 @@ public class PostDao {
         return posts;
     }
 
-    public Boolean userLikedPost(int userId, int postId) {
-        String sql = "SELECT ID_POST FROM POST_LIKES WHERE ID_USER = ? AND ID_POST = ?";
-        try(Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
-            stmt.setInt(2, postId);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if(rs.next()) {
-
-                    if(rs.getInt("ID_POST") > 0) {
-                        return true;
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
     public Boolean sendPost(Post post, Integer threadId) {
         String procedureAddPost = "CALL ADD_POST(?,?,?)";
         String procedurePlusComment = "CALL PLUS_COMMENT(?)";
@@ -225,21 +205,6 @@ public class PostDao {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public Integer getLastPostId() {
-        String sql = "SELECT MAX(ID) FROM POST";
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("MAX(ID)");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 
 
