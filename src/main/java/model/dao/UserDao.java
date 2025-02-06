@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserDao {
@@ -143,5 +145,26 @@ public class UserDao {
         user.setPathProfilePicture(rs.getString("PATH_PROFILE_PICTURE"));
         user.setFriendsQuantity(rs.getInt("FRIENDS_QUANTITY"));
         return user;
+    }
+
+    public List<User> searchUsersByUsername(String usernameSubstring) {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT ID, USERNAME, PASSWORD, EMAIL, NAME, FRIENDS_QUANTITY, BIOGRAPHY, PATH_PROFILE_PICTURE " +
+                "FROM USER_ARTEMIS WHERE USERNAME LIKE ?";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + usernameSubstring + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    users.add(mapResultSetToUser(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
     }
 }

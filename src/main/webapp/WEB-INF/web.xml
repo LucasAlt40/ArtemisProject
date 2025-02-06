@@ -53,4 +53,8 @@
         <param-name>viewPost</param-name>
         <param-value>servlets.helpers.ViewPostsHelper</param-value>
     </context-param>
+    <context-param>
+        <param-name>searchUser</param-name>
+        <param-value>servlets.helpers.SearchUserHelper</param-value>
+    </context-param>
 </web-app>
