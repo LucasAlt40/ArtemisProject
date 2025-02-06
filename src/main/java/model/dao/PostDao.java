@@ -207,15 +207,12 @@ public class PostDao {
     }
 
     public Boolean dislikePost(Integer postId, Integer userId) {
-        String sql = "DELETE POST_LIKES WHERE ID_POST = ? AND ID_USER =?";
-        String sql2 = "UPDATE POST SET LIKES_QUANTITY = (LIKES_QUANTITY - 1) WHERE ID = ?";
+        String sql = "CALL DISLIKE_POST(?, ?)";
 
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql); PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
             stmt.setInt(1, postId);
             stmt.setInt(2, userId);
-            stmt2.setInt(1, postId);
-            stmt.executeUpdate();
-            stmt2.executeUpdate();
+            stmt.executeQuery();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
