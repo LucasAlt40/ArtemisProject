@@ -2,6 +2,55 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
     <display-name>Artemis</display-name>
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>signin.jsp</welcome-file>
     </welcome-file-list>
+
+    <context-param>
+        <param-name>signIn</param-name>
+        <param-value>servlets.helpers.SignInHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>signOut</param-name>
+        <param-value>servlets.helpers.SignOutHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>signUp</param-name>
+        <param-value>servlets.helpers.SignUpHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>feed</param-name>
+        <param-value>servlets.helpers.FeedHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>post</param-name>
+        <param-value>servlets.helpers.PostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>addPost</param-name>
+        <param-value>servlets.helpers.AddPostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>likePost</param-name>
+        <param-value>servlets.helpers.LikePostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>dislikePost</param-name>
+        <param-value>servlets.helpers.DislikePostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>deletePost</param-name>
+        <param-value>servlets.helpers.DeletePostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>editPost</param-name>
+        <param-value>servlets.helpers.EditPostHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>profile</param-name>
+        <param-value>servlets.helpers.ViewUserHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>viewPost</param-name>
+        <param-value>servlets.helpers.ViewPostsHelper</param-value>
+    </context-param>
 </web-app>

@@ -32,22 +32,22 @@
                         </button>
                     </div>
                     <div class="d-flex flex-column gap-2">
-                        <jsp:include page="/src/components/nav-button.jsp">
+                        <jsp:include page="/components/nav-button.jsp">
                             <jsp:param name="icon" value="feed"/>
                             <jsp:param name="text" value="Feeds"/>
-                            <jsp:param name="href" value="/post?action=feed"/>
+                            <jsp:param name="href" value="/ControllerServlet?action=feed"/>
                         </jsp:include>
 
-                        <jsp:include page="/src/components/nav-button.jsp">
+                        <jsp:include page="/components/nav-button.jsp">
                             <jsp:param name="icon" value="profile"/>
                             <jsp:param name="text" value="Profile"/>
-                            <jsp:param name="href" value="/user?action=viewPostsByUser&username=${username}"/>
+                            <jsp:param name="href" value="/ControllerServlet?action=viewPost&username=${username}"/>
                         </jsp:include>
 
-                        <jsp:include page="/src/components/nav-button.jsp">
+                        <jsp:include page="/components/nav-button.jsp">
                             <jsp:param name="icon" value="signout"/>
                             <jsp:param name="text" value="Sign out"/>
-                            <jsp:param name="href" value="/auth?action=signout"/>
+                            <jsp:param name="href" value="/ControllerServlet?action=signOut"/>
                         </jsp:include>
                     </div>
                 </div>

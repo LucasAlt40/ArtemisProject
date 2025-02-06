@@ -15,7 +15,7 @@
             <h4 class="text-start">Threads</h4>
             <div id="threads" class="mb-3">
                 <c:if test="${not empty post}">
-                    <jsp:include page="../components/post.jsp">
+                    <jsp:include page="components/post.jsp">
                         <jsp:param name="username" value="${post.user.username}"/>
                         <jsp:param name="content" value="${post.content}"/>
                         <jsp:param name="isLiked" value="${post.isLiked}"/>
@@ -27,7 +27,7 @@
 
                     <div class="mb-3">
                         <h5>Comentários</h5>
-                        <jsp:include page="../components/post-form.jsp">
+                        <jsp:include page="components/post-form.jsp">
                             <jsp:param name="threadId" value="${post.id}"/>
                         </jsp:include>
                     </div>
@@ -35,7 +35,7 @@
                     <c:choose>
                         <c:when test="${not empty post.threads}">
                             <c:forEach var="thread" items="${post.threads}">
-                                <jsp:include page="../components/post.jsp">
+                                <jsp:include page="components/post.jsp">
                                     <jsp:param name="username" value="${thread.user.username}"/>
                                     <jsp:param name="content" value="${thread.content}"/>
                                     <jsp:param name="isLiked" value="${thread.isLiked}"/>
@@ -47,7 +47,7 @@
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
-                            <jsp:include page="../components/post.jsp">
+                            <jsp:include page="components/post.jsp">
                                 <jsp:param name="username" value="Artemis"/>
                                 <jsp:param name="content" value="Nenhuma comentário até o momento, seja o primeiro a comentar!"/>
                                 <jsp:param name="showFooter" value="${false}"/>

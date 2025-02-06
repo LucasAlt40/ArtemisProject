@@ -1,13 +1,13 @@
 @font-face {
     font-family: "Kanit";
-    src: url("./assets/fonts/Kanit-Regular.ttf");
+    src: url("assets/fonts/Kanit-Regular.ttf");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "Kanit";
-    src: url("./assets/fonts/Kanit-Bold.ttf");
+    src: url("assets/fonts/Kanit-Bold.ttf");
     font-weight: bold;
     font-style: normal;
 }
