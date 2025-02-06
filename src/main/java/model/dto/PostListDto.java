@@ -3,6 +3,7 @@ package model.dto;
 import model.entity.User;
 
 import java.util.Date;
+import java.util.List;
 
 public class PostListDto {
     private int id;
@@ -12,18 +13,20 @@ public class PostListDto {
     private Date postDate;
     private User user;
     private Boolean isLiked;
+    private List<String> images;
 
     public PostListDto() {
     }
 
-    public PostListDto(int id, String content, int likesQuantity, int commentsQuantity, Date postDate, User user, Boolean isLiked) {
+    public PostListDto(int id, String content, int likesQuantity, int commentsQuantity, Date postDate, User user, Boolean liked, List<String> images) {
         this.id = id;
         this.content = content;
         this.likesQuantity = likesQuantity;
         this.commentsQuantity = commentsQuantity;
         this.postDate = postDate;
         this.user = user;
-        this.isLiked = isLiked;
+        this.isLiked = liked;
+        this.images = images;
     }
 
     public int getId() {
