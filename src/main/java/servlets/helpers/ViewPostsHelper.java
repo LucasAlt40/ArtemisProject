@@ -27,9 +27,7 @@ public class ViewPostsHelper implements Helper {
 
         if (username != null && !username.isEmpty()) {
             List<PostListDto> posts = mapperPost.mapPostListEntityToPostListDto(
-                    postDao.getPostsByUsername(username),
-                    postDao,
-                    loggedUser.getId()
+                    postDao.getPostsByUsername(username, loggedUser.getId())
             );
 
             req.setAttribute("posts", posts);
