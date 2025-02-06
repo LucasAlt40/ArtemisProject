@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import servlets.helpers.Helper;
 import servlets.helpers.HelperFactory;
 
 @WebServlet("/ControllerServlet")
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5)
 public class FrontControllerServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

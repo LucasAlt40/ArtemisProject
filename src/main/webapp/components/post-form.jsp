@@ -10,7 +10,7 @@
 
 <c:set var="isComment" value="${not empty param.threadId}" />
 
-<form action="${pageContext.request.contextPath}/ControllerServlet" method="POST">
+<form action="${pageContext.request.contextPath}/ControllerServlet" method="POST" enctype="multipart/form-data">
     <div class="mb-2 position-relative">
         <input type="hidden" name="threadId" value="${param.threadId}">
         <textarea class="form-control" id="content" name="content" rows="5" placeholder="Escreva alguma coisa..."></textarea>
@@ -21,4 +21,6 @@
             </svg>
         </button>
     </div>
+
+    <input type="file" name="imagePost">
 </form>
