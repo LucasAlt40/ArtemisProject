@@ -156,16 +156,15 @@ public class PostDao {
                 updateStmt.executeQuery();
             } else {
                 insertStmt.setNull(3, java.sql.Types.INTEGER);
+                insertStmt.executeQuery();
             }
 
-            insertStmt.executeQuery();
             return true;
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-
     }
 
 
