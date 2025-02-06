@@ -61,14 +61,20 @@ public class PostDao {
     }
 
 
-    public List<Post> getThreadsByPostId(Integer id) {
+    public List<Post> getThreadsByPostId(Integer userId, Integer threadId) {
+        List<Post> posts = new ArrayList<>();
+        String procedureCall = "{ call GET_THREADS_BY_POST_ID(?, ?, ?) }";
 
-        String sql = "SELECT " + sqlParams + " FROM POST WHERE THREAD_ID= ?";
-        List<Post> posts = new ArrayList();
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall(procedureCall)) {
 
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
+            stmt.setInt(1, userId);
+            stmt.setInt(2, threadId);
+            stmt.registerOutParameter(3, Types.REF_CURSOR); // Para Oracle
+
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(3)) {
                 while (rs.next()) {
                     posts.add(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
@@ -80,11 +86,20 @@ public class PostDao {
         return posts;
     }
 
-    public Optional<Post> getPostById(int id) {
-        String sql = "SELECT " + sqlParams + " FROM POST WHERE ID= ?";
-        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            try (ResultSet rs = stmt.executeQuery()) {
+    public Optional<Post> getPostById(int userId, int postId) {
+        String procedureCall = "{ call GET_POST_BY_ID(?, ?, ?) }";
+
+        try (Connection conn = dataSource.getConnection();
+             CallableStatement stmt = conn.prepareCall(procedureCall)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, postId);
+
+            stmt.registerOutParameter(3, OracleTypes.CURSOR);
+
+            stmt.execute();
+
+            try (ResultSet rs = (ResultSet) stmt.getObject(3)) {
                 if (rs.next()) {
                     return Optional.of(mapperPost.mapResultSetToPost(rs, this, new UserDao(this.dataSource)));
                 }
@@ -94,6 +109,7 @@ public class PostDao {
         }
         return Optional.empty();
     }
+
 
     public List<Post> getPostsByUsername(String username) {
         String sql = "SELECT P.ID AS ID, P.CONTENT, P.LIKES_QUANTITY, P.COMMENTS_QUANTITY, P.POST_DATE, P.USER_ID, P.THREAD_ID\n" +

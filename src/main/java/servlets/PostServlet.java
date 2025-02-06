@@ -93,7 +93,7 @@ public class PostServlet extends HttpServlet {
         try{
             if(idParam != null && !idParam.isEmpty()){
                 int id = Integer.parseInt(idParam);
-                post = mapperPost.mapResultSetToPostViewDto(postDao.getPostById(id).get(), postDao);
+                post = mapperPost.mapResultSetToPostViewDto(postDao.getPostById(utils.getUserFromSession(request).getId(), id).get(), postDao);
             }
 
             if(post != null){
