@@ -7,6 +7,7 @@ import oracle.jdbc.OracleTypes;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -223,6 +224,22 @@ public class PostDao {
         }
         return false;
     }
+    public Boolean uploadPostImage(String path, Integer postId){
+        String sql = "CALL ADD_POST_IMAGE(?, ?)";
 
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql);) {
+            stmt.setString(1, path);
+            stmt.setInt(2, postId);
+            stmt.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public Collection<String> getAllImagesByPostId(Integer postId){
+        String sql 
+    }
 
 }
