@@ -238,8 +238,6 @@ public class PostDao {
         return false;
     }
 
-    public Collection<String> getAllImagesByPostId(Integer postId){
-        String sql 
-    }
+
 
 }
