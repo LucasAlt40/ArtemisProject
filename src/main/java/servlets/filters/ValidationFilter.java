@@ -25,7 +25,7 @@ public class ValidationFilter implements Filter {
         if(session == null || session.getAttribute("user") == null) {
             HttpServletResponse httpResponse = (HttpServletResponse)response;
             httpResponse.sendRedirect(httpRequest.getContextPath()+
-                    "/index.jsp");
+                    "/feed.jsp");
         }
         else {
             chain.doFilter(request, response);

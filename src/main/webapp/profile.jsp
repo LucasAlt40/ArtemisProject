@@ -12,21 +12,34 @@
 <t:app name="${user.name}" username="${user.username}">
     <jsp:body>
         <div>
-            <h4 class="text-start">Profile de <c:out value="${user.username}"/></h4>
+            <h4 class="text-start">Profile</h4>
+            <div class="mb-3">
+                <span>
+                    <c:out value="${user.username}"/>
+                </span>
+            </div>
             <div id="feed" class="mb-3">
                 <c:choose>
                     <c:when test="${not empty posts}">
                         <c:forEach var="post" items="${posts}">
-                            <jsp:include page="components/post.jsp">
-                                <jsp:param name="username" value="${post.authorUsername}"/>
-                                ... (outros parâmetros)
+                            <jsp:include page="./components/post.jsp">
+                                <jsp:param name="username" value="${post.user.username}"/>
+                                <jsp:param name="content" value="${post.content}"/>
+                                <jsp:param name="isLiked" value="${post.isLiked}"/>
+                                <jsp:param name="likesQuantity" value="${post.likesQuantity}"/>
+                                <jsp:param name="commentsQuantity" value="${post.commentsQuantity}"/>
+                                <jsp:param name="ownerPostId" value="${post.user.id}"/>
+                                <jsp:param name="postId" value="${post.id}"/>
+                                <jsp:param name="showFooter" value="${true}"/>
                             </jsp:include>
                         </c:forEach>
                     </c:when>
                     <c:otherwise>
-                        <div class="alert alert-info">
-                            Nenhum post encontrado. Comece a compartilhar suas ideias!
-                        </div>
+                        <jsp:include page="./components/post.jsp">
+                            <jsp:param name="username" value="Artemis"/>
+                            <jsp:param name="content" value="Me parece que você acabou de aterrisar! Adicione amigos para começar a interagir. Faça uma postagem agora mesmo!"/>
+                            <jsp:param name="showFooter" value="${false}"/>
+                        </jsp:include>
                     </c:otherwise>
                 </c:choose>
             </div>
