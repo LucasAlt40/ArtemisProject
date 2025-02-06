@@ -22,7 +22,7 @@ public class Utils {
     public void viewFeed(HttpServletRequest request, HttpServletResponse response, PostDao postDao) throws ServletException, IOException, SQLException {
        User user = this.getUserFromSession(request);
         if (user != null) {
-            request.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(), postDao, user.getId()));
+            request.setAttribute("posts", mapperPost.mapPostListEntityToPostListDto(postDao.getFeed(user.getId())));
         }
         request.getRequestDispatcher("/src/views/feed.jsp").forward(request, response);
     }
