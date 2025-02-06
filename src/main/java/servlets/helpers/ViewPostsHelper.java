@@ -18,6 +18,8 @@ public class ViewPostsHelper implements Helper {
         MapperPost mapperPost = new MapperPost();
         Utils utils = new Utils();
 
+        // commit
+
         User loggedUser = utils.getUserFromSession(req);
         String username = req.getParameter("username");
 
