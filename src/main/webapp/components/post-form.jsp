@@ -24,7 +24,7 @@
                     <path d="m16 6-8.414 8.586a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l8.414-8.586a4 4 0 0 0 0-5.656 4 4 0 0 0-5.656 0l-8.415 8.585a6 6 0 1 0 8.486 8.486"/>
                 </svg>
             </label>
-            <input class="form-control form-control-sm d-none" type="file" id="imagePost" name="imagePost" accept="image/*">
+            <input class="form-control form-control-sm d-none" type="file" id="imagePost" name="imagePost">
             <button class="btn btn-primary btn-sm" name="action" value="addPost">
                 <span>Enviar</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">

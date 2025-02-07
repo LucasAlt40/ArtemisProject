@@ -1,40 +1,30 @@
 (async () => {
     'use strict'
 
-    const createCardUserElement = (userId, name, username, path) => {
-        const BASE_IMAGE_URL = "http://10.242.194.182"
+    const createCardUserElement = (userId, name, username, path, isRequest = false) => {
+        const BASE_IMAGE_URL = "http://10.242.194.182";
         let cardElement = document.createElement("div");
         let textElement = document.createElement("a");
         let nameElement = document.createElement("span");
         let usernameElement = document.createElement("span");
-        let imageElement = document.createElement("img")
+        let imageElement = document.createElement("img");
         let imageFallback = document.createElement("span");
+        let acceptButton = document.createElement("button");
+        let rejectButton = document.createElement("button");
 
-        imageFallback.classList.add("d-flex");
-        imageFallback.classList.add("justify-content-center");
-        imageFallback.classList.add("align-items-center");
-        imageFallback.classList.add("bg-body-secondary");
-        imageFallback.classList.add("rounded-circle");
+        imageFallback.classList.add("d-flex", "justify-content-center", "align-items-center", "bg-body-secondary", "rounded-circle");
         imageFallback.style.width = "48px";
         imageFallback.style.height = "48px";
 
-        if(name){
+        if (name) {
             imageFallback.innerText = name.charAt(0);
-        }else{
-            if(username){
-                imageFallback.innerText = username.charAt(0);
-            }
+        } else if (username) {
+            imageFallback.innerText = username.charAt(0);
         }
 
-        cardElement.classList.add("card");
-        cardElement.classList.add("d-flex");
-        cardElement.classList.add("flex-row");
-        cardElement.classList.add("align-items-center");
-        cardElement.classList.add("gap-2");
-        cardElement.classList.add("p-2");
-        cardElement.classList.add("mb-2");
+        cardElement.classList.add("card", "d-flex", "flex-row", "align-items-center", "gap-2", "p-2", "mb-2");
 
-        textElement.append(nameElement, usernameElement)
+        textElement.append(nameElement, usernameElement);
         textElement.href = `ControllerServlet?action=viewPost&username=${username}`;
 
         nameElement.innerText = name ?? "";
@@ -42,15 +32,41 @@
 
         let avatar = imageFallback;
 
-        if(path){
+        if (path) {
             imageElement.src = `${BASE_IMAGE_URL}/${path}`;
             avatar = imageElement;
         }
 
-        cardElement.append(avatar, textElement);
+       if(isRequest) {
+           acceptButton.classList.add("btn", "btn-primary");
+           acceptButton.innerText = "Aceitar";
+           acceptButton.addEventListener("click", () => accept(userId));
+
+           rejectButton.classList.add("btn", "btn-outline-danger");
+           rejectButton.innerText = "Recusar";
+           rejectButton.addEventListener("click", () => reject(userId));
+
+           cardElement.append(avatar, textElement, acceptButton, rejectButton);
+       } else {
+           cardElement.append(avatar, textElement);
+
+       }
 
         return cardElement;
+    };
+
+    const accept = async (userId) => {
+            const url = "ControllerServlet?action=approveFriendRequest&userSubmittedId=" + userId;
+            await fetch(url).then(res => res.json());
+            window.location.reload();
     }
+
+    const reject = async (userId) => {
+        const url = "ControllerServlet?action=rejectFriendRequest&userSubmittedId=" + userId;
+        await fetch(url).then(res => res.json());
+        window.location.reload();
+    }
+
 
     const friendRequestsElement = document.getElementById("friend-requests");
     const friendsElement = document.getElementById("friends");
@@ -98,7 +114,7 @@
             if(requests.length === 0){
                 friendRequestsElement.innerText = "Nenhuma solicitação";
             }else{
-                requests.map( request => friendRequestsElement.append(createCardUserElement(request.userSubmitted.id, request.userSubmitted.name, request.userSubmitted.username, request.userSubmitted.path)) )
+                requests.map( request => friendRequestsElement.append(createCardUserElement(request.userSubmitted.id, request.userSubmitted.name, request.userSubmitted.username, request.userSubmitted.path, true)) )
             }
         }
     }

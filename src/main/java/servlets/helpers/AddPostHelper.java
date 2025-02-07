@@ -33,7 +33,7 @@ public class AddPostHelper implements Helper{
         post.setUser(user);
 
         if(postDao.sendPost(post, threadId)){
-            if(filePart != null) {
+            if(filePart.getSubmittedFileName() != null || !filePart.getSubmittedFileName().isEmpty()) {
                 postDao.uploadPostImage(FtpClient.Upload(filePart).fileName(), postDao.getLastSequenceValue());
             }
             req.setAttribute("success", "Post created");
