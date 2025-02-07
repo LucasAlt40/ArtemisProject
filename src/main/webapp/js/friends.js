@@ -54,6 +54,7 @@
 
     const friendRequestsElement = document.getElementById("friend-requests");
     const friendsElement = document.getElementById("friends");
+    const buttonsSendRequests = document.getElementsByClassName("send-request");
 
     const fetchFriendRequests = async () => {
         const url = "ControllerServlet?action=friendRequests";
@@ -63,6 +64,26 @@
     const fetchFriends = async () => {
         const url = "ControllerServlet?action=friends";
         return await fetch(url).then(res => res.json());
+    }
+
+    const sendFriendRequest = async (userReceivedId) => {
+        const url = `ControllerServlet?action=sendFriendRequest&userReceivedId=${userReceivedId}`;
+        return await fetch(url).then(res => res.json());
+    }
+
+    if(buttonsSendRequests.length > 0){
+        Array.from(buttonsSendRequests).forEach( button => {
+            button.addEventListener("click", async () => {
+                const userReceivedId = button.getAttribute("data-user-received-id");
+                const response = await sendFriendRequest(userReceivedId);
+
+                if(response.ok){
+                    const toastLiveExample = document.getElementById('sendedRequestToast')
+                    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+                    toastBootstrap.show()
+                }
+            })
+        } )
     }
 
     const friendRequestsResponse = await fetchFriendRequests();
@@ -77,8 +98,7 @@
             if(requests.length === 0){
                 friendRequestsElement.innerText = "Nenhuma solicitação";
             }else{
-                let cards = requests.map( request => createCardUserElement(request.id, request.name, request.username, request.path) )
-                friendRequestsElement.append(cards);
+                requests.map( request => friendRequestsElement.append(createCardUserElement(request.userSubmitted.id, request.userSubmitted.name, request.userSubmitted.username, request.userSubmitted.path)) )
             }
         }
     }
@@ -89,8 +109,11 @@
 
         const friends = JSON.parse(friendsResponse.friends);
         if(Array.isArray(friends)){
-            console.log(friends)
-           friends.map( friend => friendsElement.append(createCardUserElement(friend.id, friend.name, friend.username, friend.path)) )
+            if(friends.length === 0){
+                friendsElement.innerText = "Adicione seus amigos agora mesmo!";
+            }else{
+                friends.map( friend => friendsElement.append(createCardUserElement(friend.id, friend.name, friend.username, friend.path)) )
+            }
         }
     }
 

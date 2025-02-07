@@ -16,5 +16,14 @@
         <script defer src="${pageContext.request.contextPath}/js/formValidation.js"></script>
         <script defer src="${pageContext.request.contextPath}/js/likePost.js"></script>
         <script defer src="${pageContext.request.contextPath}/js/friends.js"></script>
+
+        <div class="toast-container position-fixed top-0 start-50 p-3">
+            <div id="sendedRequestToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">Solicitação enviada</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
