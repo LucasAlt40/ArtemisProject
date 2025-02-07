@@ -32,15 +32,13 @@
             </c:if>
         </div>
     </div>
-    <div class="card-body">
+    <div class="card-body d-flex flex-column">
         <span class="text-start">
             <c:out value="${param.content}"/>
         </span>
-        <c:if test="${param.images.length() > 0}">
-            <c:forEach var="image" items="${fn:split(param.images, ',')}">
-                <img class="mt-4" style="width: 100%;" src="http://10.242.194.182/${fn:replace(fn:replace(image, '[', ''), ']', '')}" />
-            </c:forEach>
-        </c:if>
+        <c:forEach var="image" items="${fn:split(param.images, ',')}">
+            <img class="w-100" src="http://10.242.194.182/${fn:replace(fn:replace(image, '[', ''), ']', '')}"  alt="Image"/>
+        </c:forEach>
     </div>
     <c:if test="${param.showFooter}">
         <div class="card-footer">

@@ -1,15 +1,12 @@
 package model.dao;
 
 import model.dto.FriendsDto;
-// import model.dto.FriendsListDto;
 import model.entity.User;
+import oracle.jdbc.OracleTypes;
 import utils.PasswordEncoder;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -111,25 +108,25 @@ public class UserDao {
     }
 
     public Collection<FriendsDto> getFriendsList(Integer userId){
-        String sql = "CALL GET_FRENDS_INFO(?)";
+        Collection<FriendsDto> friends = new ArrayList<>();
+        String sql = "CALL GET_FRIENDS_INFO(?, ?)";
 
-        Collection<FriendsDto> friendsDtos = new ArrayList<>();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(sql)) {
+            stmt.setInt(1, userId);
+            stmt.registerOutParameter(2, OracleTypes.CURSOR);
+            stmt.execute();
 
-        try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    FriendsDto fq = new FriendsDto();
-                    fq.setId(rs.getInt("FRIENDS_ID"));
-                    fq.setUsername(rs.getString("USERNAME"));
-                    fq.setName(rs.getString("NAME"));
-                    fq.setPath(rs.getString("PATH_PROFILE_PICTURE"));
-                    friendsDtos.add(fq);
+            try (ResultSet rs = (ResultSet) stmt.getObject(2)) {
+                while(rs.next()){
+                    FriendsDto friendDto = new FriendsDto();
+                    friendDto.setId(rs.getInt("FRIEND_ID"));
+                    friendDto.setUsername(rs.getString("USERNAME"));
+                    friendDto.setName(rs.getString("NAME"));
+                    friendDto.setPath(rs.getString("PATH_PROFILE_PICTURE"));
+                    friends.add(friendDto);
                 }
-
             }
-            return friendsDtos;
+            return friends;
         } catch (SQLException sqlException) {
             throw new RuntimeException("Erro durante a consulta no BD", sqlException);
         }

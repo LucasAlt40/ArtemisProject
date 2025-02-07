@@ -69,4 +69,8 @@
         <param-name>friendRequests</param-name>
         <param-value>servlets.helpers.FriendRequestsHelper</param-value>
     </context-param>
+    <context-param>
+        <param-name>friends</param-name>
+        <param-value>servlets.helpers.FriendsHelper</param-value>
+    </context-param>
 </web-app>

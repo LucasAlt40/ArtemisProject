@@ -9,7 +9,7 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:app name="${user.name}" username="${user.username}">
+<t:app name="${user.name}" username="${user.username}" userId="${user.id}">
     <jsp:body>
         <div>
             <h4 class="text-start">Explorar</h4>

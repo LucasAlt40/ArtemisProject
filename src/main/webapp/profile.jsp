@@ -9,20 +9,20 @@
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<t:app name="${user.name}" username="${user.username}">
+<t:app name="${user.name}" username="${user.username}" userId="${user.id}">
     <jsp:body>
         <div>
             <div class="sticky-top bg-dark mb-3 py-4">
                 <div class="d-flex align-items-center gap-2">
                     <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">
-                        <c:out value="${user.username.charAt(0)}"/>
+                        <c:out value="${userPost.username.charAt(0)}"/>
                     </span>
                     <div>
-                        <h4 class="text-start"><c:out value="${user.username}"/></h4>
+                        <h4 class="text-start"><c:out value="${userPost.username}"/></h4>
                         <div>
                             <c:choose>
-                                <c:when test="${user.friendsQuantity > 0}">
-                                    <span><c:out value="${user.friendsQuantity}"/></span>
+                                <c:when test="${userPost.friendsQuantity > 0}">
+                                    <span><c:out value="${userPost.friendsQuantity}"/></span>
                                 </c:when>
                                 <c:otherwise>
                                     <span>0</span>

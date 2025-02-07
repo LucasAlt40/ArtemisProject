@@ -15,5 +15,6 @@
         <script defer src="${pageContext.request.contextPath}/js/theme.js"></script>
         <script defer src="${pageContext.request.contextPath}/js/formValidation.js"></script>
         <script defer src="${pageContext.request.contextPath}/js/likePost.js"></script>
+        <script defer src="${pageContext.request.contextPath}/js/friends.js"></script>
     </body>
 </html>

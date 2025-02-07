@@ -8,10 +8,10 @@
 
 <t:root>
     <jsp:body>
-        <div class="container pb-5">
+        <div class="container py-5" data-logged-user-id="${userId}">
             <div class="row justify-content-between">
                 <div class="col-3  position-sticky" style="height: fit-content; top: 50px">
-                    <div class="d-flex justify-content-center align-items-center mb-3">
+                    <div class="d-flex flex-column justify-content-center align-items-center mb-3">
                         <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">${username.charAt(0)}</span>
                         <span>
                             <c:out value="${name}"/>
@@ -62,7 +62,7 @@
                     <jsp:doBody/>
                 </div>
                 <div class="col-3 position-sticky" style="height: fit-content; top: 50px">
-                    <div class="card">
+                    <div class="card mb-5 p-2">
                         <h4>Solicitações de amizades</h4>
                         <div id="friend-requests">
                             <div class="spinner-border" role="status">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="card">
+                    <div class="card mb-5 p-2">
                         <h4>Amigos</h4>
                         <div id="friends">
                             <div class="spinner-border" role="status">
