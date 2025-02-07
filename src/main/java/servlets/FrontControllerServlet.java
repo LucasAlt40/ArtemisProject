@@ -33,8 +33,10 @@ public class FrontControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
+        String action = req.getParameter("action");
+
         if ((session == null || session.getAttribute("user") == null)
-                && (req.getParameter("action") == null || !req.getParameter("action").equals("signIn"))) {
+                && (action == null || (!action.equals("signIn") && !action.equals("signUp")))) {
             resp.sendRedirect(req.getContextPath() + "/signin.jsp");
         } else {
             Helper helper = new HelperFactory().getHelper(req);
@@ -56,8 +58,8 @@ public class FrontControllerServlet extends HttpServlet {
                 throw new ServletException(error);
             }
         }
-
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
