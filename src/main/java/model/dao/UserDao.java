@@ -1,5 +1,7 @@
 package model.dao;
 
+import model.dto.FriendsDto;
+// import model.dto.FriendsListDto;
 import model.entity.User;
 import utils.PasswordEncoder;
 
@@ -9,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -106,6 +109,33 @@ public class UserDao {
         }
         return true;
     }
+
+    public Collection<FriendsDto> getFriendsList(Integer userId){
+        String sql = "CALL GET_FRENDS_INFO(?)";
+
+        Collection<FriendsDto> friendsDtos = new ArrayList<>();
+
+        try (Connection con = dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    FriendsDto fq = new FriendsDto();
+                    fq.setId(rs.getInt("FRIENDS_ID"));
+                    fq.setUsername(rs.getString("USERNAME"));
+                    fq.setName(rs.getString("NAME"));
+                    fq.setPath(rs.getString("PATH_PROFILE_PICTURE"));
+                    friendsDtos.add(fq);
+                }
+
+            }
+            return friendsDtos;
+        } catch (SQLException sqlException) {
+            throw new RuntimeException("Erro durante a consulta no BD", sqlException);
+        }
+
+    }
+
 
     public Optional<User> getUserByEmailAndPassword(String email, String password) {
         String passwordEncripted = PasswordEncoder.encode(password);

@@ -11,12 +11,27 @@
 
 <t:app name="${user.name}" username="${user.username}">
     <jsp:body>
-        <div class="p-3" style="border-left: 1px solid rgba(255, 255, 255, 0.15); border-right: 1px solid rgba(255, 255, 255, 0.15);">
-            <h4 class="text-start">Profile</h4>
-            <div class="mb-3">
-                <span>
-                    <c:out value="${user.username}"/>
-                </span>
+        <div>
+            <div class="sticky-top bg-dark mb-3 py-4">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">
+                        <c:out value="${user.username.charAt(0)}"/>
+                    </span>
+                    <div>
+                        <h4 class="text-start"><c:out value="${user.username}"/></h4>
+                        <div>
+                            <c:choose>
+                                <c:when test="${user.friendsQuantity > 0}">
+                                    <span><c:out value="${user.friendsQuantity}"/></span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span>0</span>
+                                </c:otherwise>
+                            </c:choose>
+                            <span>amigo(s)</span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="feed" class="mb-3">
                 <c:choose>
