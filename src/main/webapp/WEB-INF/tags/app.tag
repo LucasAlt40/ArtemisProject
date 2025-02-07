@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@attribute name="userId" required="true"%>
 <%@attribute name="name" required="true"%>
 <%@attribute name="username" required="true"%>
 
@@ -61,21 +62,22 @@
                     <jsp:doBody/>
                 </div>
                 <div class="col-3 position-sticky" style="height: fit-content; top: 50px">
-                    <div>
+                    <div class="card">
+                        <h4>Solicitações de amizades</h4>
+                        <div id="friend-requests">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
                         <h4>Amigos</h4>
-                        <c:choose>
-                            <c:when test="${not empty friends}">
-                                <div class="row justify-content-between gy-3 mb-3">
-                                    <div class="col">
-                                        <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">AF</span>
-                                    </div>
-                                    <span>Ver todos</span>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <span>Adicione seus amigos agora mesmo!</span>
-                            </c:otherwise>
-                        </c:choose>
+                        <div id="friends">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
