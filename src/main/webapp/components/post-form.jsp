@@ -14,6 +14,16 @@
     <div class="mb-2 position-relative">
         <input type="hidden" name="threadId" value="${param.threadId}">
         <textarea class="form-control" id="content" name="content" rows="5" placeholder="Escreva alguma coisa..."></textarea>
+        <img id="fileImage"/>
+        <div class="position-absolute w-75" style="bottom: 10px; right: 10px; left: 10px">
+            <label for="imagePost" class="form-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-paperclip">
+                    <path d="M13.234 20.252 21 12.3"/>
+                    <path d="m16 6-8.414 8.586a2 2 0 0 0 0 2.828 2 2 0 0 0 2.828 0l8.414-8.586a4 4 0 0 0 0-5.656 4 4 0 0 0-5.656 0l-8.415 8.585a6 6 0 1 0 8.486 8.486"/>
+                </svg>
+            </label>
+            <input class="form-control form-control-sm d-none" type="file" id="imagePost" name="imagePost" accept="image/*">
+        </div>
         <button class="btn btn-primary btn-sm position-absolute" style="bottom: 10px; right: 10px" name="action" value="addPost">
             <span>Enviar</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
@@ -21,6 +31,20 @@
             </svg>
         </button>
     </div>
-
-    <input type="file" name="imagePost">
 </form>
+
+<script>
+    const imageFile = document.getElementById("imageFile")
+    const input = document.getElementById("imagePost");
+    const fileReader = reader = new FileReader();
+
+    input.addEventListener("change", () => {
+        if(input.files.length <= 0){
+            return;
+        }
+        fileReader.onload = () => {
+            imageFile.src = fileReader.result;
+        }
+        fileReader.readAsDataURL(input.files[0])
+    })
+</script>
