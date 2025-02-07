@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = {"/post","/user"},
+@WebFilter(urlPatterns = {"/feed.jsp","/profile.jsp","/search.jsp","/threads.jsp"},
         filterName = "Authorization")
 public class ValidationFilter implements Filter {
 
@@ -22,6 +22,7 @@ public class ValidationFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest)request;
         HttpSession session = httpRequest.getSession(false);
+
         if(session == null || session.getAttribute("user") == null) {
             HttpServletResponse httpResponse = (HttpServletResponse)response;
             httpResponse.sendRedirect(httpRequest.getContextPath()+
