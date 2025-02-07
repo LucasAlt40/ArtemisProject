@@ -33,7 +33,7 @@ public class FrontControllerServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         if ((session == null || session.getAttribute("user") == null)
                 && (req.getParameter("action") == null || !req.getParameter("action").equals("signIn"))) {
-            resp.sendRedirect(req.getContextPath() + "/index.jsp");
+            resp.sendRedirect(req.getContextPath() + "/signin.jsp");
         } else {
             Helper helper = new HelperFactory().getHelper(req);
             try {

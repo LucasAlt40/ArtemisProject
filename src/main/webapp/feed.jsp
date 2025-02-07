@@ -12,7 +12,7 @@
 <t:app name="${user.name}" username="${user.username}">
     <jsp:body>
         <div>
-            <h4 class="text-start">Feeds</h4>
+            <h4 class="text-start">Postagens</h4>
             <div class="mb-3">
                 <span class="fs-5 fw-medium mb-1">No que está pensando?!</span>
                 <jsp:include page="components/post-form.jsp"/>

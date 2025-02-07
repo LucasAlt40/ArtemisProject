@@ -57,4 +57,12 @@
         <param-name>searchUser</param-name>
         <param-value>servlets.helpers.SearchUserHelper</param-value>
     </context-param>
+    <context-param>
+        <param-name>sendFriendRequest</param-name>
+        <param-value>servlets.helpers.SendFriendRequestHelper</param-value>
+    </context-param>
+    <context-param>
+        <param-name>approveFriendRequest</param-name>
+        <param-value>servlets.helpers.ApproveFriendRequestHelper</param-value>
+    </context-param>
 </web-app>

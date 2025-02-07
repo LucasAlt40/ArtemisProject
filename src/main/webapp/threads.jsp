@@ -12,7 +12,7 @@
 <t:app name="${user.name}" username="${user.username}">
     <jsp:body>
         <div>
-            <h4 class="text-start">Threads</h4>
+            <h4 class="text-start">Postagem</h4>
             <div id="threads" class="mb-3">
                 <c:if test="${not empty post}">
                     <jsp:include page="components/post.jsp">
