@@ -8,10 +8,10 @@
 
 <t:root>
     <jsp:body>
-        <div class="container py-5" data-logged-user-id="${userId}">
-            <div class="row justify-content-between">
-                <div class="col-3  position-sticky" style="height: fit-content; top: 50px">
-                    <div class="d-flex flex-column justify-content-center align-items-center mb-3">
+        <div class="w-100 overflow-x-hidden" data-logged-user-id="${userId}">
+            <div class="row justify-content-between ps-3 pe-3">
+                <div class="col-3 position-sticky" style="height: fit-content; top: 50px">
+                    <div class="d-flex flex-column justify-content-center align-items-center mb-3 w-100">
                         <span class="d-flex justify-content-center align-items-center bg-body-secondary rounded-circle" style="width: 64px; height: 64px">${username.charAt(0)}</span>
                         <span>
                             <c:out value="${name}"/>
@@ -58,10 +58,10 @@
                         </jsp:include>
                     </div>
                 </div>
-                <div class="col-5">
+                <div class="col-6 border-start border-end border-1">
                     <jsp:doBody/>
                 </div>
-                <div class="col-3 position-sticky" style="height: fit-content; top: 50px">
+                <div class="col position-sticky" style="height: fit-content; top: 50px">
                     <div class="card mb-5 p-2">
                         <h4>Solicitações de amizades</h4>
                         <div id="friend-requests">
