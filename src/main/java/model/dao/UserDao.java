@@ -1,7 +1,7 @@
 package model.dao;
 
 import model.dto.FriendsDto;
-import model.dto.FriendsListDto;
+// import model.dto.FriendsListDto;
 import model.entity.User;
 import utils.PasswordEncoder;
 
