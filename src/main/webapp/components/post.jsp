@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:set var="showOptions" value="${param.ownerPostId == user.id}" />
 
@@ -35,6 +36,9 @@
         <span class="text-start">
             <c:out value="${param.content}"/>
         </span>
+        <c:forEach var="image" items="${fn:split(param.images, ',')}">
+            <img src="http://10.242.194.182/${fn:replace(fn:replace(image, '[', ''), ']', '')}" />
+        </c:forEach>
     </div>
     <c:if test="${param.showFooter}">
         <div class="card-footer">

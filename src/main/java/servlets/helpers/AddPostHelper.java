@@ -1,11 +1,14 @@
 package servlets.helpers;
 
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.dao.PostDao;
 import model.entity.Post;
 import model.entity.User;
 import utils.DataSourceSearcher;
+import utils.FtpClient;
 
 public class AddPostHelper implements Helper{
     @Override
@@ -13,6 +16,9 @@ public class AddPostHelper implements Helper{
         int threadId = 0;
 
         String content = req.getParameter("content");
+        Part filePart = req.getPart("imagePost");
+
+
         if(req.getParameter("threadId") != null && !req.getParameter("threadId").trim().isEmpty()){
             threadId = Integer.parseInt(req.getParameter("threadId"));
         }
@@ -21,12 +27,17 @@ public class AddPostHelper implements Helper{
 
         PostDao postDao = new PostDao(DataSourceSearcher.getInstance().getDataSource());
 
+
         Post post = new Post();
         post.setContent(content);
         post.setUser(user);
 
         if(postDao.sendPost(post, threadId)){
+            if(filePart != null) {
+                postDao.uploadPostImage(FtpClient.Upload(filePart).fileName(), postDao.getLastSequenceValue());
+            }
             req.setAttribute("success", "Post created");
+
         }
 
         return "ControllerServlet?action=feed";

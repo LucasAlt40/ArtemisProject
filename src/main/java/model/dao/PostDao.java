@@ -238,6 +238,24 @@ public class PostDao {
         return false;
     }
 
+    public Integer getLastSequenceValue() {
+        String sql = "SELECT ID_POST_SEQUENCE.CURRVAL FROM DUAL";
+
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+
 
 
 }
