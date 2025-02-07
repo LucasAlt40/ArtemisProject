@@ -58,10 +58,10 @@
                         </jsp:include>
                     </div>
                 </div>
-                <div class="col-6 border-start border-end border-1 pt-5 vh-100">
+                <div class="col-5 border-start border-end border-1 pt-5 vh-100">
                     <jsp:doBody/>
                 </div>
-                <div class="col position-sticky" style="height: fit-content; top: 50px">
+                <div class="col-3 position-sticky" style="height: fit-content; top: 50px">
                     <div class="card mb-5 p-2">
                         <h6>Solicitações de amizades</h6>
                         <div id="friend-requests">

@@ -32,6 +32,8 @@ public class AddPostHelper implements Helper{
         post.setContent(content);
         post.setUser(user);
 
+        System.out.println(filePart.getSubmittedFileName());
+
         if(postDao.sendPost(post, threadId)){
             if(filePart.getSubmittedFileName() != null || !filePart.getSubmittedFileName().isEmpty()) {
                 postDao.uploadPostImage(FtpClient.Upload(filePart).fileName(), postDao.getLastSequenceValue());
