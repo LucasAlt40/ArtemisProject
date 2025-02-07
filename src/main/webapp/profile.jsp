@@ -11,7 +11,7 @@
 
 <t:app name="${user.name}" username="${user.username}">
     <jsp:body>
-        <div>
+        <div class="p-3" style="border-left: 1px solid rgba(255, 255, 255, 0.15); border-right: 1px solid rgba(255, 255, 255, 0.15);">
             <h4 class="text-start">Profile</h4>
             <div class="mb-3">
                 <span>

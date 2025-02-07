@@ -11,13 +11,13 @@
 
 <t:app name="${user.name}" username="${user.username}">
     <jsp:body>
-        <div>
+        <div class="p-3" style="border-left: 1px solid rgba(255, 255, 255, 0.15); border-right: 1px solid rgba(255, 255, 255, 0.15);">
             <h4 class="text-start">Feeds</h4>
             <div class="mb-3">
                 <span class="fs-5 fw-medium mb-1">No que está pensando?!</span>
                 <jsp:include page="components/post-form.jsp"/>
             </div>
-            <div id="feed" class="mb-3">
+            <div id="feed" class="mb-3" >
                 <c:choose>
                     <c:when test="${not empty posts}">
                         <c:forEach var="post" items="${posts}">
