@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary" name="action" value="singUp">Cadastrar-se</button>
+                        <button type="submit" class="btn btn-primary" name="action" value="signUp">Cadastrar-se</button>
                         <a href="${pageContext.request.contextPath}/signin.jsp" class="link-underline text-center">Já possuo uma conta, acessar.</a>
                     </div>
                 </form>

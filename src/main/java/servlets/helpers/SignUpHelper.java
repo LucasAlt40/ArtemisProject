@@ -24,6 +24,8 @@ public class SignUpHelper implements Helper{
 
         UserDao userDao = new UserDao(DataSourceSearcher.getInstance().getDataSource());
 
+        System.out.println(user);
+
         if (userDao.save(user)) {
             req.setAttribute("result", "registered");
             return "signin.jsp";

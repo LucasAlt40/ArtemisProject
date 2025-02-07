@@ -100,7 +100,6 @@ public class UserDao {
             ps.setString(6, user.getBiography());
             ps.setString(7, user.getPathProfilePicture());
             ps.executeUpdate();
-
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao inserir no banco", e);
         }
