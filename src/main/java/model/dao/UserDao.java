@@ -1,7 +1,6 @@
 package model.dao;
 
 import model.dto.FriendsDto;
-import model.dto.FriendsListDto;
 import model.entity.User;
 import utils.PasswordEncoder;
 
@@ -84,8 +83,6 @@ public class UserDao {
     }
 
 
-
-
     public Boolean save(User user){
         Optional<User> optional = getUserByEmail(user.getEmail());
         if(optional.isPresent()) {
@@ -135,6 +132,35 @@ public class UserDao {
         }
 
     }
+
+    public Collection<FriendsDto> getRequestList(Integer userId){
+        String sql = "SELECT R.ID_USER_SUBMITTED , UA.USERNAME, UA.NAME, UA.PATH_PROFILE_PICTURE, UA.PATH_PROFILE_BANNER\n" +
+                "FROM REQUEST R\n" +
+                "JOIN EQUIPE.USER_ARTEMIS UA on R.ID_USER_SUBMITTED = UA.ID\n" +
+                "WHERE ID_USER_RECEIVED = ?;\n";
+
+        Collection<FriendsDto> friendsDtos = new ArrayList<>();
+        try (Connection conn = dataSource.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    FriendsDto fq = new FriendsDto();
+                    fq.setId(rs.getInt("FRIEND_ID"));
+                    fq.setUsername(rs.getString("USERNAME"));
+                    fq.setName(rs.getString("NAME"));
+                    fq.setPath(rs.getString("PATH_PROFILE_PICTURE"));
+                    friendsDtos.add(fq);
+                }
+            }
+            return friendsDtos;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+
 
 
     public Optional<User> getUserByEmailAndPassword(String email, String password) {
